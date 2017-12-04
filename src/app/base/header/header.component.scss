@@ -1,0 +1,36 @@
+.ui-header{
+  display: flex;
+}
+
+.ui-menu-collapsed{
+  .anticon{
+    font-size: 18px;
+    cursor: pointer;
+  }
+}
+.ui-user-info{
+  flex: auto;
+  color: rgba(0, 0, 0, .65);
+
+  display: flex;
+  justify-content: flex-end;
+  & > .ui-user-cell{
+    margin-left: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all .25s;
+    &:hover{
+      opacity: .8;
+    }
+    i{
+      font-size: 20px;
+      vertical-align: middle;
+    }
+    img{
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+  }
+}

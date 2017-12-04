@@ -1,0 +1,37 @@
+/**
+ * @module sass 预定义变量
+ * @author phuhoang 
+ */
+
+/* -------------- frame -------------- */
+$headerHeight: 56px;          // header 高度
+$menuWidth: 240px;            // menu 宽
+$containerBg: #f6f7fb;      // 内容区域背景颜色
+
+/* --------------- 主色 --------------- */
+$themeColor: #409EFF;
+/* -------------- 辅助色 -------------- */
+$successColor: #67C23A;
+$warningColor: #EB9E05;
+$dangerColor: #FA5555;
+$infoColor: #878D99;
+
+/* ------------- 字体颜色 ------------- */
+$fontColor: #2D2F33;
+$mainColor: #5A5E66;
+$secondaryColor: #878D99;
+
+/* ------------- 边框颜色 ------------- */
+$border1Color: #D8DCE5;
+$border1: solid 1px $border1Color;
+$border2Color: #DFE4ED;
+$border2: solid 1px $border2Color;
+$border3Color: #E6EBF5;
+$border3: solid 1px $border3Color;
+$border4Color: #EDF2FC;
+$border4: solid 1px $border4Color;
+
+/* 屏幕大小 */
+$screen-sm: 768px;
+$screen-md: 1024px;
+$screen-lg: 1366px;
