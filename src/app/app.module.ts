@@ -20,6 +20,7 @@ import { MessageComponent } from './base/message/message.component';
 import { FollowUpCustomerComponent } from './views/customer/follow-up/follow-up.component';
 import { NewCustomerComponent } from './views/customer/new/new.component';
 import { AddCustomerComponent } from './views/customer/add/add.component';
+import { BatchImportComponent } from './views/customer/batch-import/batch-import.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AddCustomerComponent } from './views/customer/add/add.component';
     MessageComponent,
     FollowUpCustomerComponent,
     NewCustomerComponent,
-    AddCustomerComponent
+    AddCustomerComponent,
+    BatchImportComponent
   ],
   entryComponents: [
     AddCustomerComponent
