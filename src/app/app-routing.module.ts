@@ -43,6 +43,11 @@ const routes: Routes = [
         component: FollowUpCustomerComponent
       }
     ]
+  },
+  {
+    path: '**',
+    redirectTo: 'home/notfount',
+    pathMatch: 'full'
   }
 ];
 

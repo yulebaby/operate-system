@@ -1,12 +1,13 @@
+import { AddressService } from './services/selects/address.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
-import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { NgZorroAntdModule, NZ_LOCALE, zhCN } from 'ng-zorro-antd';
 
 import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BaseComponent } from './base/base.component';
 import { HeaderComponent } from './base/header/header.component';
 import { MenuComponent } from './base/menu/menu.component';
@@ -18,6 +19,7 @@ import { NotFountComponent } from './base/not-fount/not-fount.component';
 import { MessageComponent } from './base/message/message.component';
 import { FollowUpCustomerComponent } from './views/customer/follow-up/follow-up.component';
 import { NewCustomerComponent } from './views/customer/new/new.component';
+import { AddCustomerComponent } from './views/customer/add/add.component';
 
 @NgModule({
   declarations: [
@@ -32,16 +34,24 @@ import { NewCustomerComponent } from './views/customer/new/new.component';
     NotFountComponent,
     MessageComponent,
     FollowUpCustomerComponent,
-    NewCustomerComponent
+    NewCustomerComponent,
+    AddCustomerComponent
+  ],
+  entryComponents: [
+    AddCustomerComponent
   ],
   imports: [
     FormsModule,
     BrowserModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     NgZorroAntdModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    { provide: NZ_LOCALE, useValue: zhCN},
+    AddressService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

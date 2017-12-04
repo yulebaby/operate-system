@@ -1,0 +1,33 @@
+.ant-input-lg{
+  height: 32px !important;
+}
+.query-head{
+  .ant-form-item-control{
+    height: 32px;
+  }
+  .ant-input-number{
+    display: block;
+    float: left;
+    width: 45.83333333%;
+    margin: 0;
+  }
+}
+
+.expand-box{
+  & > div{
+    font-size: 14px;
+    padding: 8px 0;
+    label{
+      color: #99a9bf;
+      font-size: 14px;
+      text-align: right;
+      padding-right: 30px;
+    }
+    div,
+    label{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
