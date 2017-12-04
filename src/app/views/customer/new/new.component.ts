@@ -2,7 +2,7 @@ import { AddressService } from './../../../services/selects/address.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AddCustomerComponent } from '../add/add.component';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-new',
@@ -16,7 +16,9 @@ export class NewCustomerComponent implements OnInit {
   constructor(
     private fb: FormBuilder = new FormBuilder(),
     private Address: AddressService,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private _message: NzMessageService,
+    private _notification: NzNotificationService
   ) { }
 
   public _options: any[] = null;
@@ -162,5 +164,16 @@ export class NewCustomerComponent implements OnInit {
     })
   }
 
+
+  upExcel(excelDome): void {
+    const file = excelDome.files[0];
+    if (file) {
+      let message = this._message.loading('导入中, 请稍后').messageId;
+      setTimeout(_ => {
+        this._message.remove(message);
+        this._notification.create('success', '批量导入用户信息成功', '成功 10条 失败0条 共10条');
+      }, 2500)
+    }
+  }
 }
 
