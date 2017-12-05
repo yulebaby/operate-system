@@ -153,7 +153,8 @@
   [(nzPageIndex)]="_current"
   (nzPageIndexChange)="refreshData()"
   [(nzPageSize)]="_pageSize"
-  (nzPageSizeChange)="refreshData(true)" [nzPageSize]="10" [nzScroll]="{ y: 560 }">
+  (nzPageSizeChange)="refreshData(true)"
+  [nzScroll]="{ y: 560 }">
   <ng-template #nzFixedHeader>
     <thead nz-thead>
       <tr>
@@ -176,6 +177,9 @@
         <th nz-th nzWidth="120px">
           <span>预约日期</span>
         </th>
+        <th nz-th nzWidth="60px">
+          <span>预约日期</span>
+        </th>
       </tr>
     </thead>
   </ng-template>
@@ -191,10 +195,11 @@
         <td nz-td>{{data.address}}</td>
         <td nz-td>{{data.name}}</td>
         <td nz-td>{{data.age}}</td>
+        <td nz-td><a href="javascript: void(0);" (click)="updateCustomerInfo(data)">编辑</a></td>
       </tr>
       <tr nz-tbody-tr *ngIf="data.expand" class="ui-table-expand">
         <td nz-td></td>
-        <td nz-td colspan="9">
+        <td nz-td colspan="10">
           <div class="expand-box">
             <div nz-col [nzSpan]="12">
               <label nz-col [nzSpan]="8">填写时间</label>

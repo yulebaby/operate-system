@@ -23,10 +23,10 @@ export class HttpService {
   *            1. 请求地址: string    (必填)
   *            2. 请求参数: object    (必填: 可为空)
   */
-  post(url: string, query: object): any {
+  post(url: string, query: object): Promise<any> {
     let urlAddress = url.substr(0, 4) === 'http' ? url : environment.domain + url;
     let params = query;
-    // params['token'] = this.loginService.token;
+    params['token'] = this.loginService.userInfo.token;
     return new Promise((resolve, reject) => {
       this.http.post(urlAddress, this.serialize(params), { headers: this.header })
         .retry(1)
@@ -45,10 +45,10 @@ export class HttpService {
     })
   }
 
-  get(url: string, query: object): any {
+  get(url: string, query: object): Promise<any> {
     let urlAddress = url.substr(0, 4) === 'http' ? url : environment.domain + url;
     let params = query;
-    // params['token'] = this.loginService.token;
+    params['token'] = this.loginService.userInfo.token;
     return new Promise((resolve, reject) => {
       this.http.get(urlAddress + '?' + this.serialize(params))
         .retry(1)

@@ -19,7 +19,7 @@ export class NewCustomerComponent implements OnInit {
   /* --------------------- 省市区集合 ---------------------- */
   public addressItems: any[] = null;
 
-  /* --------------------- 所属门店集合 --------------------- */
+  /* -------------------- 所属门店集合 --------------------- */
   public storeItems: any[] = [{ value: 'jack', label: 'Jack' }, { value: 'lucy', label: 'Lucy' }, { value: 'disabled', label: 'Disabled', disabled: true }];
 
 
@@ -151,6 +151,10 @@ export class NewCustomerComponent implements OnInit {
   }
 
 
+  /* ------------------------ 编辑信息 ------------------------- */
+  updateCustomerInfo(userInfo: object): void {
+    console.log(userInfo)
+  }
 
   /* ----------------------- 远程加载数据 ----------------------- */
   public tableItems = [];
@@ -167,7 +171,7 @@ export class NewCustomerComponent implements OnInit {
   _pageSize = 10;
   _total = 1;
   _loading = true;
-  refreshData(reset = false) {
+  refreshData(reset = false): void {
     if (reset) {
       this._current = 1;
     }
