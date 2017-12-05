@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { AddCustomerComponent } from '../add/add.component';
 import { NzModalService, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { SourceComponent } from '../source/source.component';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-new',
@@ -21,65 +22,14 @@ export class NewCustomerComponent implements OnInit {
   /* --------------------- 所属门店集合 --------------------- */
   public storeItems: any[] = [{ value: 'jack', label: 'Jack' }, { value: 'lucy', label: 'Lucy' }, { value: 'disabled', label: 'Disabled', disabled: true }];
 
-  /* ---------------------- 表单列表 ----------------------- */
-  public tableItems = [
-    {
-      name: 'John Brown',
-      age: 32,
-      expand: false,
-      address: 'New York No. 1 Lake Park',
-      description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.'
-    },
-    {
-      name: 'Jim Green',
-      age: 42,
-      expand: false,
-      address: 'London No. 1 Lake Park',
-      description: 'My name is Jim Green'
-    },
-    {
-      name: 'Joe Black',
-      age: 32,
-      expand: false,
-      address: 'Sidney No. 1 Lake Park',
-      description: 'My name is Joe Black.'
-    },
-    {
-      name: 'Joe Black',
-      age: 32,
-      expand: false,
-      address: 'Sidney No. 1 Lake Park',
-      description: 'My name is Joe Black.'
-    },
-    {
-      name: 'Joe Black',
-      age: 32,
-      expand: false,
-      address: 'Sidney No. 1 Lake Park',
-      description: 'My name is Joe Black.'
-    },
-    {
-      name: 'Joe Black',
-      age: 32,
-      expand: false,
-      address: 'Sidney No. 1 Lake Park',
-      description: 'My name is Joe Black.'
-    },
-    {
-      name: 'Joe Black',
-      age: 32,
-      expand: false,
-      address: 'Sidney No. 1 Lake Park',
-      description: 'My name is Joe Black.'
-    },
-  ];
 
   constructor(
     private fb: FormBuilder = new FormBuilder(),
     private Address: AddressService,
     private modalService: NzModalService,
     private _message: NzMessageService,
-    private _notification: NzNotificationService
+    private _notification: NzNotificationService,
+    private http: HttpClient
   ) {
     this.addressItems = Address.addressItems;
   }
@@ -101,8 +51,9 @@ export class NewCustomerComponent implements OnInit {
       reserveTimeStart: [''],
       reserveTimeEnd: ['']
     });
-  }
 
+    this.refreshData();
+  }
 
   /* --------------------------- 根据筛选条件查询/重置 --------------------------- */
   query (): void {
@@ -198,5 +149,35 @@ export class NewCustomerComponent implements OnInit {
       }, 2500)
     }
   }
+
+
+
+  /* ----------------------- 远程加载数据 ----------------------- */
+  public tableItems = [];
+  public randomUserUrl: string = 'https://api.randomuser.me/';
+  getUsers(pageIndex = 1, pageSize = 10) {
+    let params = new HttpParams()
+      .append('page', `${pageIndex}`)
+      .append('results', `${pageSize}`);
+    return this.http.get(`${this.randomUserUrl}`, {
+      params: params
+    })
+  }
+  _current = 1;
+  _pageSize = 10;
+  _total = 1;
+  _loading = true;
+  refreshData(reset = false) {
+    if (reset) {
+      this._current = 1;
+    }
+    this._loading = true;
+    this.getUsers(this._current, this._pageSize).subscribe((data: any) => {
+      this._loading = false;
+      this._total = 200;
+      this.tableItems = data.results;
+    })
+  };
+
 }
 

@@ -22,6 +22,8 @@ import { NewCustomerComponent } from './views/customer/new/new.component';
 import { AddCustomerComponent } from './views/customer/add/add.component';
 import { BatchImportComponent } from './views/customer/batch-import/batch-import.component';
 import { SourceComponent } from './views/customer/source/source.component';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpService } from './services/http.service';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import { SourceComponent } from './views/customer/source/source.component';
   ],
   imports: [
     FormsModule,
+    HttpClientModule,
     BrowserModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -55,7 +58,8 @@ import { SourceComponent } from './views/customer/source/source.component';
   ],
   providers: [
     { provide: NZ_LOCALE, useValue: zhCN},
-    AddressService
+    AddressService,
+    HttpService
   ],
   bootstrap: [AppComponent]
 })

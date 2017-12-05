@@ -145,7 +145,15 @@
 </form>
 
 
-<nz-table #nzTable [nzDataSource]="tableItems" [nzPageSize]="10" [nzScroll]="{ y: 560 }">
+<nz-table #nzTable 
+  [nzAjaxData]="tableItems"
+  [nzShowSizeChanger]="true"
+  [nzLoading]="_loading"
+  [nzTotal]="_total"
+  [(nzPageIndex)]="_current"
+  (nzPageIndexChange)="refreshData()"
+  [(nzPageSize)]="_pageSize"
+  (nzPageSizeChange)="refreshData(true)" [nzPageSize]="10" [nzScroll]="{ y: 560 }">
   <ng-template #nzFixedHeader>
     <thead nz-thead>
       <tr>
