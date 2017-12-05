@@ -1,3 +1,4 @@
+import { UpdateComponent } from './../update/update.component';
 import { AddressService } from './../../../services/selects/address.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -25,13 +26,13 @@ export class NewCustomerComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder = new FormBuilder(),
-    private Address: AddressService,
+    private address: AddressService,
     private modalService: NzModalService,
     private _message: NzMessageService,
     private _notification: NzNotificationService,
     private http: HttpClient
   ) {
-    this.addressItems = Address.addressItems;
+    this.addressItems = address.addressItems;
   }
 
   ngOnInit() {
@@ -153,7 +154,23 @@ export class NewCustomerComponent implements OnInit {
 
   /* ------------------------ 编辑信息 ------------------------- */
   updateCustomerInfo(userInfo: object): void {
-    console.log(userInfo)
+    console.log(`触发`);
+    const subscription = this.modalService.open({
+      title: '修改客户信息',
+      content: UpdateComponent,
+      onOk() {
+      },
+      onCancel() {
+        console.log('Click cancel');
+      },
+      footer: false,
+      componentParams: {
+        userInfo: userInfo
+      }
+    });
+    subscription.subscribe(result => {
+      console.log(result);
+    })
   }
 
   /* ----------------------- 远程加载数据 ----------------------- */

@@ -24,6 +24,7 @@ import { BatchImportComponent } from './views/customer/batch-import/batch-import
 import { SourceComponent } from './views/customer/source/source.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpService } from './services/http.service';
+import { UpdateComponent } from './views/customer/update/update.component';
 
 @NgModule({
   declarations: [
@@ -41,11 +42,13 @@ import { HttpService } from './services/http.service';
     NewCustomerComponent,
     AddCustomerComponent,
     BatchImportComponent,
-    SourceComponent
+    SourceComponent,
+    UpdateComponent
   ],
   entryComponents: [
     AddCustomerComponent,
-    SourceComponent
+    SourceComponent,
+    UpdateComponent
   ],
   imports: [
     FormsModule,

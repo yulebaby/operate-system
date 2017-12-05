@@ -19,8 +19,16 @@
     font-size: 14px;
     cursor: pointer;
     transition: all .25s;
+    position: relative;
     &:hover{
-      opacity: .8;
+      span{
+        color: rgba(0, 0, 0, .75);
+      }
+      .ui-user-fixed{
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+      }
     }
     i{
       font-size: 20px;
@@ -31,6 +39,26 @@
       height: 24px;
       border-radius: 50%;
       vertical-align: middle;
+    }
+  }
+  .ui-user-fixed{
+    min-width: 100%;
+    padding: 4px 0;
+    background: #fff;
+    box-shadow: 0 2px 2px #ccc;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, 10px, 0);
+    transition: all .25s;
+    li{
+      line-height: 34px;
+      padding: 0 10px;
+      &:hover{
+        background: rgba(0, 0, 0, .05);
+      }
     }
   }
 }
