@@ -3,38 +3,20 @@
 </div>
 <div class="ui-menu">
   <ul nz-menu [nzMode]="'inline'" nzTheme='dark'>
-    <li nz-menu-item>
+    <li nz-menu-item [routerLink]="['/home/welcome']">
       <span title>
         <i class="anticon anticon-mail"></i>
-        <span>一级导航</span>
+        <span>Welcome</span>
       </span>
     </li>
     <li nz-submenu>
       <span title>
         <i class="anticon anticon-appstore"></i>
-        <span>一级导航</span>
+        <span>客户管理</span>
       </span>
       <ul>
-        <li nz-menu-item>二级导航</li>
-        <li nz-menu-item>二级导航</li>
-        <li nz-submenu>
-          <span title>二级导航</span>
-          <ul>
-            <li nz-menu-item>三级导航</li>
-            <li nz-menu-item>三级导航</li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li nz-submenu>
-      <span title>
-        <i class="anticon anticon-setting"></i>
-        <span>一级导航</span>
-      </span>
-      <ul>
-        <li nz-menu-item>二级导航</li>
-        <li nz-menu-item>二级导航</li>
-        <li nz-menu-item>二级导航</li>
+        <li nz-menu-item [routerLink]="['/home/newcustomer']">新进客户</li>
+        <li nz-menu-item [routerLink]="['/home/followupcustomer']">已更近客户</li>
       </ul>
     </li>
   </ul>

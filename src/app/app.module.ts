@@ -21,6 +21,7 @@ import { FollowUpCustomerComponent } from './views/customer/follow-up/follow-up.
 import { NewCustomerComponent } from './views/customer/new/new.component';
 import { AddCustomerComponent } from './views/customer/add/add.component';
 import { BatchImportComponent } from './views/customer/batch-import/batch-import.component';
+import { SourceComponent } from './views/customer/source/source.component';
 
 @NgModule({
   declarations: [
@@ -37,10 +38,12 @@ import { BatchImportComponent } from './views/customer/batch-import/batch-import
     FollowUpCustomerComponent,
     NewCustomerComponent,
     AddCustomerComponent,
-    BatchImportComponent
+    BatchImportComponent,
+    SourceComponent
   ],
   entryComponents: [
-    AddCustomerComponent
+    AddCustomerComponent,
+    SourceComponent
   ],
   imports: [
     FormsModule,
