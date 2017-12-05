@@ -1,3 +1,4 @@
+import { BaseGuard } from './base/base.guard';
 import { NewCustomerComponent } from './views/customer/new/new.component';
 import { FollowUpCustomerComponent } from './views/customer/follow-up/follow-up.component';
 import { MessageComponent } from './base/message/message.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
   {
     path: 'home',
     component: BaseComponent,
+    canActivate: [BaseGuard],
     children: [
       {
         path: 'welcome',

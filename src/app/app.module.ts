@@ -25,6 +25,7 @@ import { SourceComponent } from './views/customer/source/source.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpService } from './services/http.service';
 import { UpdateComponent } from './views/customer/update/update.component';
+import { BaseGuard } from './base/base.guard';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { UpdateComponent } from './views/customer/update/update.component';
   providers: [
     { provide: NZ_LOCALE, useValue: zhCN},
     AddressService,
-    HttpService
+    HttpService,
+    BaseGuard
   ],
   bootstrap: [AppComponent]
 })
