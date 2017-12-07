@@ -23,7 +23,7 @@ export class HttpService {
   *            1. 请求地址: string    (必填)
   *            2. 请求参数: object    (必填: 可为空)
   */
-  post(url: string, query: object): Promise<any> {
+  post(url: string, query: object = {}): Promise<any> {
     let urlAddress = url.substr(0, 4) === 'http' ? url : environment.domain + url;
     let params = query;
     params['token'] = this.loginService.userInfo.token;
@@ -45,7 +45,7 @@ export class HttpService {
     })
   }
 
-  get(url: string, query: object): Promise<any> {
+  get(url: string, query: object = {}): Promise<any> {
     let urlAddress = url.substr(0, 4) === 'http' ? url : environment.domain + url;
     let params = query;
     params['token'] = this.loginService.userInfo.token;

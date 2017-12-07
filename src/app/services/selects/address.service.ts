@@ -7,33 +7,17 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class AddressService {
   public addressItems: object[] = [{
-    value: 'zhejiang',
-    label: 'Zhejiang',
+    value: '110000',
+    label: '北京直辖市',
     children: [{
-      value: 'hangzhou',
-      label: 'Hangzhou',
+      value: '110100',
+      label: '北京市',
       children: [{
-        value: 'xihu',
-        label: 'West Lake',
+        value: '110105',
+        label: '朝阳区',
         isLeaf: true
       }],
-    }, {
-      value: 'ningbo',
-      label: 'Ningbo',
-      isLeaf: true
     }],
-    }, {
-      value: 'jiangsu',
-      label: 'Jiangsu',
-      children: [{
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [{
-          value: 'zhonghuamen',
-          label: 'Zhong Hua Men',
-          isLeaf: true
-        }],
-      }],
-    }];;
+  }];
   constructor () {}
  }

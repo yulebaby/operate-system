@@ -1,3 +1,5 @@
+import { environment } from './../../../../environments/environment';
+import { CustomerSourceService } from './../../../services/selects/customer-source.service';
 import { UpdateComponent } from './../update/update.component';
 import { AddressService } from './../../../services/selects/address.service';
 import { Component, OnInit } from '@angular/core';
@@ -5,7 +7,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { AddCustomerComponent } from '../add/add.component';
 import { NzModalService, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { SourceComponent } from '../source/source.component';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpService } from '../../../services/http.service';
 
 @Component({
   selector: 'app-new',
@@ -16,6 +18,7 @@ export class NewCustomerComponent implements OnInit {
 
   /* ------------------- 查询条件表单模型 ------------------- */
   public queryForm: FormGroup;
+  public tableInfo: PageInfo = new PageInfo();
 
   /* --------------------- 省市区集合 ---------------------- */
   public addressItems: any[] = null;
@@ -28,9 +31,10 @@ export class NewCustomerComponent implements OnInit {
     private fb: FormBuilder = new FormBuilder(),
     private address: AddressService,
     private modalService: NzModalService,
-    private _message: NzMessageService,
+    private message: NzMessageService,
     private _notification: NzNotificationService,
-    private http: HttpClient
+    private http: HttpService,
+    private source: CustomerSourceService
   ) {
     this.addressItems = address.addressItems;
   }
@@ -50,15 +54,25 @@ export class NewCustomerComponent implements OnInit {
       address: [],
       store: [''],
       reserveTimeStart: [''],
-      reserveTimeEnd: ['']
+      reserveTimeEnd: [''],
+      status: ['']
     });
 
-    this.refreshData();
+    this.query();
   }
 
   /* --------------------------- 根据筛选条件查询/重置 --------------------------- */
-  query (): void {
-    console.log(this.queryForm.value);
+  public tableItems = [];
+  query(reset = false): void {
+    this.tableInfo.loading = true;
+    const Params = this.queryForm.value;
+    Params.pageNo = reset ? 1 : this.tableInfo.pageNo;
+    Params.pageSize = this.tableInfo.pageSize;
+    this.http.post(`${environment.domain}/customerDetail/selectCustomerDetailList`, this.queryForm.value).then((res: any) => {
+      this.tableInfo.loading = false;
+      this.tableInfo.total = res.result.total;
+      this.tableItems = res.result.list;
+    })
   }
   resetForm (): void {
     this.queryForm.reset();
@@ -104,18 +118,13 @@ export class NewCustomerComponent implements OnInit {
     const subscription = this.modalService.open({
       title: '新增客户信息',
       content: AddCustomerComponent,
-      onOk() {
-      },
-      onCancel() {
-        console.log('Click cancel');
-      },
       footer: false,
-      componentParams: {
-        name: '传入name值'
-      }
     });
     subscription.subscribe(result => {
-      console.log(result);
+      if(result === true){
+        this.message.create('success', `新增用户信息成功`)
+        subscription.destroy();
+      }
     })
   }
 
@@ -124,18 +133,13 @@ export class NewCustomerComponent implements OnInit {
     const subscription = this.modalService.open({
       title: '新增客户来源',
       content: SourceComponent,
-      onOk() {
-      },
-      onCancel() {
-        console.log('Click cancel');
-      },
       footer: false,
-      componentParams: {
-        name: '传入name值'
-      }
     });
     subscription.subscribe(result => {
-      console.log(result);
+      if (result === true) {
+        this.message.create('success', `新增用户信息成功`)
+        subscription.destroy();
+      }
     })
   }
 
@@ -143,62 +147,54 @@ export class NewCustomerComponent implements OnInit {
   upExcel(excelDome): void {
     const file = excelDome.files[0];
     if (file) {
-      let message = this._message.loading('导入中, 请稍后').messageId;
+      let message = this.message.loading('导入中, 请稍后').messageId;
       setTimeout(_ => {
-        this._message.remove(message);
+        this.message.remove(message);
         this._notification.create('success', '批量导入用户信息成功', '成功 10条 失败0条 共10条');
       }, 2500)
     }
   }
 
 
-  /* ------------------------ 编辑信息 ------------------------- */
+  /* ------------------------- 编辑信息 -------------------------- */
   updateCustomerInfo(userInfo: object): void {
-    console.log(`触发`);
     const subscription = this.modalService.open({
       title: '修改客户信息',
       content: UpdateComponent,
-      onOk() {
-      },
-      onCancel() {
-        console.log('Click cancel');
-      },
       footer: false,
       componentParams: {
         userInfo: userInfo
       }
     });
     subscription.subscribe(result => {
-      console.log(result);
+      if (result === true) {
+        this.message.create('success', `客户预约成功`)
+        subscription.destroy();
+      }
     })
   }
 
-  /* ----------------------- 远程加载数据 ----------------------- */
-  public tableItems = [];
-  public randomUserUrl: string = 'https://api.randomuser.me/';
-  getUsers(pageIndex = 1, pageSize = 10) {
-    let params = new HttpParams()
-      .append('page', `${pageIndex}`)
-      .append('results', `${pageSize}`);
-    return this.http.get(`${this.randomUserUrl}`, {
-      params: params
+  /* ----------------------- 获取电话号码 ------------------------ */
+  getPhone (item): void {
+    this.http.post(`${environment.domain}/customerDetail/findByParentPhone`, { customerBabyId: item.customerBabyId }).then(res => {
+      this.tableItems.map(data => {
+        if (data.id === item.id) {
+          data.checkPhone = res.result;
+        }
+      })
     })
   }
-  _current = 1;
-  _pageSize = 10;
-  _total = 1;
-  _loading = true;
-  refreshData(reset = false): void {
-    if (reset) {
-      this._current = 1;
-    }
-    this._loading = true;
-    this.getUsers(this._current, this._pageSize).subscribe((data: any) => {
-      this._loading = false;
-      this._total = 200;
-      this.tableItems = data.results;
-    })
-  };
 
 }
 
+/**
+ * @module 分页信息
+ */
+export class PageInfo {
+  constructor(
+    public pageNo: number = 1,
+    public pageSize: number = 10,
+    public total: number = 0,
+    public loading: boolean = false
+  ) { }
+}

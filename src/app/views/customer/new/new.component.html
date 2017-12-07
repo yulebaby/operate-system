@@ -118,12 +118,37 @@
         </div>
       </div>
     </div>
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>状态</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-select nzSize="large" formControlName="status" nzPlaceHolder="请选择状态" [nzShowSearch]="true" nzAllowClear>
+            <nz-option
+              *ngFor="let option of [
+                  { value: 1, label: '新用户' },
+                  { value: 2, label: '首次跟踪' },
+                  { value: 3, label: '二次跟踪' },
+                  { value: 4, label: '已预约' },
+                  { value: 5, label: '已分配' },
+                  { value: 6, label: '已体验' },
+                  { value: 7, label: '已办卡' }
+                ]"
+              [nzLabel]="option.label"
+              [nzValue]="option.value"
+              [nzDisabled]="option.disabled">
+            </nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
     <div nz-col [nzSpan]="24" nz-form-item [style.text-align]="'center'">
       <button nz-button nzSize="large" [nzType]="'primary'" (click)="query()">搜索</button>
       <button nz-button nzSize="large" (click)="resetForm()">重置</button>
       <nz-button-group [style.float]="'right'">
         <button nz-button nzType="primary" (click)="addCustomerInfo()">新增客户信息</button>
-        <nz-dropdown>
+        <!-- <nz-dropdown>
           <button nz-button nz-dropdown nzType="primary">
             <span>批量导入客户信息</span>
             <i class="anticon anticon-down"></i>
@@ -138,7 +163,7 @@
             </li>
           </ul>
         </nz-dropdown>
-        <button nz-button nzType="primary" (click)="addCustomerSource()">新增客户来源</button>
+        <button nz-button nzType="primary" (click)="addCustomerSource()">新增客户来源</button> -->
       </nz-button-group>
     </div>
   </div>
@@ -148,12 +173,12 @@
 <nz-table #nzTable 
   [nzAjaxData]="tableItems"
   [nzShowSizeChanger]="true"
-  [nzLoading]="_loading"
-  [nzTotal]="_total"
-  [(nzPageIndex)]="_current"
-  (nzPageIndexChange)="refreshData()"
-  [(nzPageSize)]="_pageSize"
-  (nzPageSizeChange)="refreshData(true)">
+  [nzLoading]="tableInfo.loading"
+  [nzTotal]="tableInfo.total"
+  [(nzPageIndex)]="tableInfo.pageNo"
+  (nzPageIndexChange)="query()"
+  [(nzPageSize)]="tableInfo.pageSize"
+  (nzPageSizeChange)="query(true)">
   <thead nz-thead>
     <tr>
       <th nz-th [nzExpand]="true" nzWidth="50px"></th>
@@ -176,7 +201,7 @@
         <span>预约日期</span>
       </th>
       <th nz-th nzWidth="60px">
-        <span>预约日期</span>
+        <span>操作</span>
       </th>
     </tr>
   </thead>
@@ -186,13 +211,16 @@
         <td nz-td [nzExpand]="true">
           <nz-row-expand-icon [(nzExpand)]="data.expand"></nz-row-expand-icon>
         </td>
-        <td nz-td><a href="javascript: void(0);">查看电话</a></td>
-        <td nz-td>{{data.age}}</td>
-        <td nz-td>{{data.address}}</td>
-        <td nz-td>{{data.address}}</td>
-        <td nz-td>{{data.name}}</td>
-        <td nz-td>{{data.age}}</td>
-        <td nz-td><a href="javascript: void(0);" (click)="updateCustomerInfo(data)">编辑</a></td>
+        <td nz-td>
+          <a href="javascript: void(0);" (click)="getPhone(data)" [hidden]="data.checkPhone">查看电话</a>
+          {{ data.checkPhone ? data.checkPhone : ''}}
+        </td>
+        <td nz-td>{{data.secondName}}</td>
+        <td nz-td>{{data.customerSpreadRelationId}}</td>
+        <td nz-td>{{data.province + data.city + data.area}}</td>
+        <td nz-td>{{data.shopName}}</td>
+        <td nz-td>{{data.preStartDate}}</td>
+        <td nz-td><a href="javascript: void(0);" (click)="updateCustomerInfo(data)">预约</a></td>
       </tr>
       <tr nz-tbody-tr *ngIf="data.expand" class="ui-table-expand">
         <td nz-td></td>
