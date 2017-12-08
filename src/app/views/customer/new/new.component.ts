@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { environment } from './../../../../environments/environment';
 import { CustomerSourceService } from './../../../services/selects/customer-source.service';
 import { UpdateComponent } from './../update/update.component';
@@ -24,7 +25,7 @@ export class NewCustomerComponent implements OnInit {
   public addressItems: any[] = null;
 
   /* -------------------- 所属门店集合 --------------------- */
-  public storeItems: any[] = [{ value: 'jack', label: 'Jack' }, { value: 'lucy', label: 'Lucy' }, { value: 'disabled', label: 'Disabled', disabled: true }];
+  public storeItems: any[] = [{ value: null, label: '请选择省市区' }];
 
 
   constructor(
@@ -34,40 +35,52 @@ export class NewCustomerComponent implements OnInit {
     private message: NzMessageService,
     private _notification: NzNotificationService,
     private http: HttpService,
-    private source: CustomerSourceService
-  ) {
-    this.addressItems = address.addressItems;
+    private source: CustomerSourceService,
+    private format: DatePipe
+  ) { 
+    if (!address.addressItems.length) {
+      this.http.get(`${environment.domain}/common/getAllProvinceCityArea`).then(res => {
+        this.addressItems = res || [];
+      })
+    } else {
+      this.addressItems = address.addressItems;
+    }
   }
 
   ngOnInit() {
     this.queryForm = this.fb.group({
-      phone: [''],
-      name: [''],
-      createTimeStart: [''],
-      createTimeEnd: [''],
+      parentPhone: [''],
+      secondName: [''],
+      filloutStartDate: [''],
+      filloutEndDate: [''],
       source: [''],
-      priceStart: [''],
-      priceEnd: [''],
-      province: [''],
-      city: [''],
-      area: [''],
+      activityPrice: [''],
+      provinceCode: [''],
+      cityCode: [''],
+      areaCode: [''],
       address: [],
-      store: [''],
-      reserveTimeStart: [''],
-      reserveTimeEnd: [''],
+      shopId: [''],
+      preStartDate: [''],
+      preEndDate: [''],
       status: ['']
     });
 
     this.query();
   }
 
+
+
   /* --------------------------- 根据筛选条件查询/重置 --------------------------- */
   public tableItems = [];
   query(reset = false): void {
     this.tableInfo.loading = true;
     const Params = this.queryForm.value;
-    Params.pageNo = reset ? 1 : this.tableInfo.pageNo;
+    Params.pageNum = reset ? 1 : this.tableInfo.pageNum;
     Params.pageSize = this.tableInfo.pageSize;
+    if (Params.filloutStartDate) Params.filloutStartDate = this.format.transform(Params.filloutStartDate, 'yyyy-MM-dd');
+    if (Params.filloutEndDate) Params.filloutEndDate = this.format.transform(Params.filloutEndDate, 'yyyy-MM-dd');
+    if (Params.preStartDate) Params.preStartDate = this.format.transform(Params.preStartDate, 'yyyy-MM-dd');
+    if (Params.preEndDate) Params.preEndDate = this.format.transform(Params.preEndDate, 'yyyy-MM-dd');
     this.http.post(`${environment.domain}/customerDetail/selectCustomerDetailList`, this.queryForm.value).then((res: any) => {
       this.tableInfo.loading = false;
       this.tableInfo.total = res.result.total;
@@ -80,37 +93,51 @@ export class NewCustomerComponent implements OnInit {
 
   /* ---------------------------- 约束开始/结束日期 ---------------------------- */
   _disabledStartDate1 = (startValue) => {
-    if (!startValue || !this.queryForm.get('createTimeEnd').value) {
+    if (!startValue || !this.queryForm.get('filloutEndDate').value) {
       return false;
     }
-    return startValue.getTime() >= this.queryForm.get('createTimeEnd').value.getTime();
+    return startValue.getTime() >= this.queryForm.get('filloutEndDate').value.getTime();
   };
   _disabledEndDate1 = (endValue) => {
-    if (!endValue || !this.queryForm.get('createTimeStart').value) {
+    if (!endValue || !this.queryForm.get('filloutStartDate').value) {
       return false;
     }
-    return endValue.getTime() <= this.queryForm.get('createTimeStart').value.getTime();
+    return endValue.getTime() <= this.queryForm.get('filloutStartDate').value.getTime();
   };
   _disabledStartDate2 = (startValue) => {
-    if (!startValue || !this.queryForm.get('reserveTimeEnd').value) {
+    if (!startValue || !this.queryForm.get('preEndDate').value) {
       return false;
     }
-    return startValue.getTime() >= this.queryForm.get('reserveTimeEnd').value.getTime();
+    return startValue.getTime() >= this.queryForm.get('preEndDate').value.getTime();
   };
   _disabledEndDate2 = (endValue) => {
-    if (!endValue || !this.queryForm.get('reserveTimeStart').value) {
+    if (!endValue || !this.queryForm.get('preStartDate').value) {
       return false;
     }
-    return endValue.getTime() <= this.queryForm.get('reserveTimeStart').value.getTime();
+    return endValue.getTime() <= this.queryForm.get('preStartDate').value.getTime();
   };
 
   /* ---------------------- 省市区联动改变事件 ---------------------- */
   _addressChange(value) {
     this.queryForm.patchValue({
-      province: value[0] || '',
-      city: value[1] || '',
-      area: value[2] || ''
+      provinceCode: value[0] || '',
+      cityCode: value[1] || '',
+      areaCode: value[2] || ''
     });
+    if(value[0]){
+      this.http.post(`${environment.domain}/common/findByShopObj`, {
+        provinceCode	: value[0] || '',
+        cityCode: value[1] || '',
+        areaCode: value[2] || ''
+      }).then(res => {
+        if (res.code == 1000 && res.result.length) {
+          this.storeItems = res.result;
+        } else {
+          console.log(11)
+          this.storeItems = [{ id: null, shopName: '该城市下暂无门店' }]
+        }
+      })
+    }
   }
 
   /* ------------------------ 新增客户信息 ------------------------ */
@@ -124,6 +151,7 @@ export class NewCustomerComponent implements OnInit {
       if(result === true){
         this.message.create('success', `新增用户信息成功`)
         subscription.destroy();
+        this.query(true);
       }
     })
   }
@@ -158,6 +186,7 @@ export class NewCustomerComponent implements OnInit {
 
   /* ------------------------- 编辑信息 -------------------------- */
   updateCustomerInfo(userInfo: object): void {
+    if (userInfo['appointmentId']) return;
     const subscription = this.modalService.open({
       title: '修改客户信息',
       content: UpdateComponent,
@@ -170,6 +199,7 @@ export class NewCustomerComponent implements OnInit {
       if (result === true) {
         this.message.create('success', `客户预约成功`)
         subscription.destroy();
+        this.query(true);
       }
     })
   }
@@ -192,7 +222,7 @@ export class NewCustomerComponent implements OnInit {
  */
 export class PageInfo {
   constructor(
-    public pageNo: number = 1,
+    public pageNum: number = 1,
     public pageSize: number = 10,
     public total: number = 0,
     public loading: boolean = false

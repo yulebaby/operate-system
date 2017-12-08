@@ -81,7 +81,9 @@
         </nz-option>
       </nz-select>
       <div nz-form-explain 
-        *ngIf="getFormControl('precontractDate').dirty && getFormControl('precontractDate').hasError('required') || getFormControl('precontractId').dirty && getFormControl('precontractId').hasError('required')"
+        *ngIf="getFormControl('precontractDate').dirty && getFormControl('precontractDate').hasError('required') || 
+          getFormControl('precontractId').dirty && getFormControl('precontractId').hasError('required') || 
+          getFormControl('precontractId').dirty && getFormControl('precontractId').hasError('pattern')"
       >请选择预约时间</div>
     </div>
   </div>

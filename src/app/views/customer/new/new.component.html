@@ -3,32 +3,32 @@
     <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
       <div nz-form-item nz-row>
         <div nz-form-label nz-col [nzSpan]="5">
-          <label [attr.for]="'phone'">家长电话</label>
+          <label [attr.for]="'parentPhone'">家长电话</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="19">
-          <nz-input nzSize="large" nzPlaceHolder="请输入家长电话" formControlName="phone" nzId="phone"></nz-input>
+          <nz-input nzSize="large" nzPlaceHolder="请输入家长电话" formControlName="parentPhone" nzId="parentPhone"></nz-input>
         </div>
       </div>
     </div>
     <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
       <div nz-form-item nz-row>
         <div nz-form-label nz-col [nzSpan]="5">
-          <label [attr.for]="'name'">宝宝昵称</label>
+          <label [attr.for]="'secondName'">宝宝昵称</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="19">
-          <nz-input [nzSize]="'large'" nzPlaceHolder="请输入宝宝昵称" formControlName="name" nzId="name"></nz-input>
+          <nz-input [nzSize]="'large'" nzPlaceHolder="请输入宝宝昵称" formControlName="secondName" nzId="secondName"></nz-input>
         </div>
       </div>
     </div>
     <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
       <div nz-form-item nz-row>
         <div nz-form-label nz-col [nzSpan]="5">
-          <label [attr.for]="'createTimeStart'">填写日期</label>
+          <label>填写日期</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="19">
           <nz-datepicker 
             nz-col [nzSpan]="11"
-            formControlName="createTimeStart" 
+            formControlName="filloutStartDate" 
             [nzSize]="'large'" 
             [nzPlaceHolder]="'开始日期'" 
             [nzFormat]="'YYYY-MM-DD'"
@@ -37,7 +37,7 @@
           <div nz-col [nzSpan]="2" style="text-align: center">-</div>
           <nz-datepicker 
             nz-col [nzSpan]="11"
-            formControlName="createTimeEnd" 
+            formControlName="filloutEndDate" 
             [nzSize]="'large'" 
             [nzPlaceHolder]="'结束日期'" 
             [nzFormat]="'YYYY-MM-DD'" 
@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+    <!-- <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
       <div nz-form-item nz-row>
         <div nz-form-label nz-col [nzSpan]="5">
           <label [attr.for]="'priceStart'">活动价格</label>
@@ -55,6 +55,16 @@
           <nz-input-number nzSize="large" formControlName="priceStart" nzPlaceHolder="最低价格"></nz-input-number>
           <div nz-col [nzSpan]="2" style="text-align: center">-</div>
           <nz-input-number nzSize="large" formControlName="priceEnd" nzPlaceHolder="最高价格" [nzMin]="queryForm.get('priceStart').value"></nz-input-number>
+        </div>
+      </div>
+    </div> -->
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label [attr.for]="'activityPrice'">活动价格</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-input [nzSize]="'large'" nzPlaceHolder="请输入活动价格" formControlName="activityPrice" nzId="activityPrice"></nz-input>
         </div>
       </div>
     </div>
@@ -81,11 +91,11 @@
           <label>所属门店</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="19">
-          <nz-select nzSize="large" formControlName="store" nzPlaceHolder="请选择所属门店" [nzShowSearch]="true" nzAllowClear>
+          <nz-select nzSize="large" formControlName="shopId" nzPlaceHolder="请选择所属门店" [nzShowSearch]="true" nzAllowClear>
             <nz-option
               *ngFor="let option of storeItems"
-              [nzLabel]="option.label"
-              [nzValue]="option"
+              [nzLabel]="option.shopName"
+              [nzValue]="option.id"
               [nzDisabled]="option.disabled">
             </nz-option>
           </nz-select>
@@ -100,7 +110,7 @@
         <div nz-form-control nz-col [nzSpan]="19">
           <nz-datepicker 
             nz-col [nzSpan]="11"
-            formControlName="reserveTimeStart" 
+            formControlName="preStartDate" 
             [nzSize]="'large'" 
             [nzPlaceHolder]="'开始日期'" 
             [nzFormat]="'YYYY-MM-DD'"
@@ -109,7 +119,7 @@
           <div nz-col [nzSpan]="2" style="text-align: center">-</div>
           <nz-datepicker 
             nz-col [nzSpan]="11"
-            formControlName="reserveTimeEnd" 
+            formControlName="preEndDate" 
             [nzSize]="'large'" 
             [nzPlaceHolder]="'结束日期'" 
             [nzFormat]="'YYYY-MM-DD'" 
@@ -175,7 +185,7 @@
   [nzShowSizeChanger]="true"
   [nzLoading]="tableInfo.loading"
   [nzTotal]="tableInfo.total"
-  [(nzPageIndex)]="tableInfo.pageNo"
+  [(nzPageIndex)]="tableInfo.pageNum"
   (nzPageIndexChange)="query()"
   [(nzPageSize)]="tableInfo.pageSize"
   (nzPageSizeChange)="query(true)">
@@ -219,8 +229,8 @@
         <td nz-td>{{data.customerSpreadRelationId}}</td>
         <td nz-td>{{data.province + data.city + data.area}}</td>
         <td nz-td>{{data.shopName}}</td>
-        <td nz-td>{{data.preStartDate}}</td>
-        <td nz-td><a href="javascript: void(0);" (click)="updateCustomerInfo(data)">预约</a></td>
+        <td nz-td>{{(data.precontractDate ? data.precontractDate : '')  + ' ' + (data.precontractTime ? data.precontractTime : '')}}</td>
+        <td nz-td><a href="javascript: void(0);" (click)="updateCustomerInfo(data)">{{data.appointmentId ? '-' : '预约'}}</a></td>
       </tr>
       <tr nz-tbody-tr *ngIf="data.expand" class="ui-table-expand">
         <td nz-td></td>
@@ -228,15 +238,15 @@
           <div class="expand-box">
             <div nz-col [nzSpan]="12">
               <label nz-col [nzSpan]="8">填写时间</label>
-              <div nz-col [nzSpan]="16">2017-11-09 23:12:01</div>
+              <div nz-col [nzSpan]="16">{{data.createTime}}</div>
             </div>
             <div nz-col [nzSpan]="12">
               <label nz-col [nzSpan]="8">活动价格</label>
-              <div nz-col [nzSpan]="16">¥12.05</div>
+              <div nz-col [nzSpan]="16">{{data.activityPrice}}</div>
             </div>
             <div nz-col [nzSpan]="24">
               <label nz-col [nzSpan]="4">备注</label>
-              <div nz-col [nzSpan]="20">多放辣椒多放醋, 多放辣椒多放醋, 多放辣椒多放醋</div>
+              <div nz-col [nzSpan]="20">{{data.remark}}</div>
             </div>
           </div>
         </td>

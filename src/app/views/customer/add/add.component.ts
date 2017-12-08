@@ -20,7 +20,7 @@ export class AddCustomerComponent implements OnInit {
 
   public sourceItems: object[];
 
-  public stopItems: object[];
+  public stopItems: object[] = [{id: -1, shopName: '请选择省市区'}];
 
   submitForm = ($event, value) => {
     $event.preventDefault();
@@ -64,7 +64,14 @@ export class AddCustomerComponent implements OnInit {
       activityPrice: ['', [Validators.required, Validators.pattern(/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/)]]
     });
     this.sourceItems = source.sourceItems;
-    this.addressItems = address.addressItems;
+
+    if (!address.addressItems.length){
+      this.http.get(`${environment.domain}/common/getAllProvinceCityArea`).then(res => {
+        this.addressItems = res || [];
+      })
+    }else{
+      this.addressItems = address.addressItems;
+    }
   };
   
   ngOnInit() {
