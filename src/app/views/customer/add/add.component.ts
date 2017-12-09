@@ -1,5 +1,5 @@
 import { HttpService } from './../../../services/http.service';
-import { NzModalSubject } from 'ng-zorro-antd';
+import { NzModalSubject, NzMessageService } from 'ng-zorro-antd';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -22,22 +22,34 @@ export class AddCustomerComponent implements OnInit {
 
   public stopItems: object[] = [{id: -1, shopName: '请选择省市区'}];
 
+  public submitLoading: boolean = false;
+
   submitForm = ($event, value) => {
+    if(this.submitLoading) return;
     $event.preventDefault();
     for (const key in this.validateForm.controls) {
       this.validateForm.controls[key].markAsDirty();
     }
+    this.submitLoading = true;
+
     this.http.post(`${environment.domain}/customerDetail/insert`, this.validateForm.value).then(res => {
-      this.subject.next(true);
+      this.submitLoading = false;
+      if (res.code == 1000) {
+        this.subject.next(true);
+      }else if(res.code == 1003){
+        this.message.create('error', res.info);
+      }
+    }).catch( err => {
+      this.submitLoading = false;
     })
   };
 
   resetForm($event: MouseEvent) {
     $event.preventDefault();
     this.validateForm.reset();
-    for (const key in this.validateForm.controls) {
-      this.validateForm.controls[key].markAsPristine();
-    }
+    // for (const key in this.validateForm.controls) {
+    //   this.validateForm.controls[key].markAsPristine();
+    // }
   }
 
   getFormControl(name) {
@@ -50,12 +62,13 @@ export class AddCustomerComponent implements OnInit {
     private address: AddressService,
     private subject: NzModalSubject,
     private http: HttpService,
-    private source: CustomerSourceService
+    private source: CustomerSourceService,
+    private message: NzMessageService
   ) {
     this.validateForm = fb.group({
       secondName: ['', [Validators.required]],
       parentPhone: ['', [Validators.required, Validators.pattern(/^1[3|5|7|8][0-9]\d{8}$/)]],
-      address: ['', [Validators.required]],
+      address: [''],
       province: ['', [Validators.required]],
       city: ['', [Validators.required]],
       area: ['', [Validators.required]],
@@ -63,42 +76,49 @@ export class AddCustomerComponent implements OnInit {
       customerSpreadRelationId: ['', [Validators.required]],
       activityPrice: ['', [Validators.required, Validators.pattern(/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/)]]
     });
-    this.sourceItems = source.sourceItems;
 
     if (!address.addressItems.length){
       this.http.get(`${environment.domain}/common/getAllProvinceCityArea`).then(res => {
+        address.addressItems = res || [];
         this.addressItems = res || [];
       })
     }else{
       this.addressItems = address.addressItems;
     }
+
+    if (!source.sourceItems.length) {
+      this.http.post(`${environment.domain}/common/selectSpreadRelations`).then(res => {
+        source.sourceItems = res.result || [];
+        this.sourceItems = res.result || [];
+      })
+    } else {
+      this.sourceItems = source.sourceItems
+    }
   };
   
   ngOnInit() {
-    
+ 
   }
-
-  /* ---------------------------- 保存用户信息 ---------------------------- */
-  saveUserInfo (): void {
-    this.http.post(`${environment.domain}/customerDetail/insert`, this.validateForm.value).then( res => {
-      console.log(res)
-    })
-  }
-
 
   /* -------------------------- 省市区联动改变事件 ------------------------- */
   _addressChange(value) {
-    this.validateForm.patchValue({
-      province: value[0] || '',
-      city: value[1] || '',
-      area: value[2] || ''
-    });
-    this.http.post(`${environment.domain}/common/findByShopObj`, {
-      province: value[0] || '',
-      city: value[1] || '',
-      area: value[2] || ''
-    }).then( res => {
-      this.stopItems = res.result;
-    })
+    if (value[0]) {
+      this.validateForm.patchValue({
+        province: value[0] || '',
+        city: value[1] || '',
+        area: value[2] || ''
+      });
+      this.http.post(`${environment.domain}/common/findByShopObj`, {
+        provinceCode: value[0] || '',
+        cityCode: value[1] || '',
+        areaCode: value[2] || ''
+      }).then( res => {
+        if (res.code == 1000 && res.result.length) {
+          this.stopItems = res.result;
+        } else {
+          this.stopItems = [{ id: null, shopName: '该城市下暂无门店' }]
+        }
+      })
+    }
   }
 }

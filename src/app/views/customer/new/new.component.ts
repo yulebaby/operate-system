@@ -25,7 +25,10 @@ export class NewCustomerComponent implements OnInit {
   public addressItems: any[] = null;
 
   /* -------------------- 所属门店集合 --------------------- */
-  public storeItems: any[] = [{ value: null, label: '请选择省市区' }];
+  public storeItems: any[] = [{ id: '', shopName: '请选择省市区' }];
+
+  /* -------------------- 客户来源集合 --------------------- */
+  public customerSpreadItems: any[];
 
 
   constructor(
@@ -40,10 +43,20 @@ export class NewCustomerComponent implements OnInit {
   ) { 
     if (!address.addressItems.length) {
       this.http.get(`${environment.domain}/common/getAllProvinceCityArea`).then(res => {
+        address.addressItems = res || [];
         this.addressItems = res || [];
       })
     } else {
       this.addressItems = address.addressItems;
+    }
+
+    if (!source.sourceItems.length) {
+      this.http.post(`${environment.domain}/common/selectSpreadRelations`).then(res => {
+        source.sourceItems = res.result || [];
+        this.customerSpreadItems = res.result || [];
+      })
+    } else {
+      this.customerSpreadItems = source.sourceItems
     }
   }
 
@@ -53,7 +66,7 @@ export class NewCustomerComponent implements OnInit {
       secondName: [''],
       filloutStartDate: [''],
       filloutEndDate: [''],
-      source: [''],
+      customerSpreadRelationId: [''],
       activityPrice: [''],
       provinceCode: [''],
       cityCode: [''],
@@ -62,7 +75,9 @@ export class NewCustomerComponent implements OnInit {
       shopId: [''],
       preStartDate: [''],
       preEndDate: [''],
-      status: ['']
+      stage: [''],
+      visitStartDate: [''],
+      visitEndDate: ['']
     });
 
     this.query();
@@ -81,14 +96,38 @@ export class NewCustomerComponent implements OnInit {
     if (Params.filloutEndDate) Params.filloutEndDate = this.format.transform(Params.filloutEndDate, 'yyyy-MM-dd');
     if (Params.preStartDate) Params.preStartDate = this.format.transform(Params.preStartDate, 'yyyy-MM-dd');
     if (Params.preEndDate) Params.preEndDate = this.format.transform(Params.preEndDate, 'yyyy-MM-dd');
+    if (Params.visitStartDate) Params.visitStartDate = this.format.transform(Params.visitStartDate, 'yyyy-MM-dd');
+    if (Params.visitEndDate) Params.visitEndDate = this.format.transform(Params.visitEndDate, 'yyyy-MM-dd');
     this.http.post(`${environment.domain}/customerDetail/selectCustomerDetailList`, this.queryForm.value).then((res: any) => {
       this.tableInfo.loading = false;
       this.tableInfo.total = res.result.total;
       this.tableItems = res.result.list;
+    }).catch( err => {
+      this.tableInfo.loading = false;
+      this.message.create('error', '网络错误, 请刷新重试');
     })
   }
   resetForm (): void {
     this.queryForm.reset();
+    this.queryForm.patchValue({
+      parentPhone: '',
+      secondName: '',
+      filloutStartDate: '',
+      filloutEndDate: '',
+      customerSpreadRelationId: '',
+      activityPrice: '',
+      provinceCode: '',
+      cityCode: '',
+      areaCode: '',
+      address: [],
+      shopId: '',
+      preStartDate: '',
+      preEndDate: '',
+      stage: '',
+      visitStartDate: '',
+      visitEndDate: ''
+    });
+    this.storeItems = [{ id: '', shopName: '请选择省市区' }];
   }
 
   /* ---------------------------- 约束开始/结束日期 ---------------------------- */
@@ -102,7 +141,7 @@ export class NewCustomerComponent implements OnInit {
     if (!endValue || !this.queryForm.get('filloutStartDate').value) {
       return false;
     }
-    return endValue.getTime() <= this.queryForm.get('filloutStartDate').value.getTime();
+    return endValue.getTime() < this.queryForm.get('filloutStartDate').value.getTime();
   };
   _disabledStartDate2 = (startValue) => {
     if (!startValue || !this.queryForm.get('preEndDate').value) {
@@ -114,7 +153,19 @@ export class NewCustomerComponent implements OnInit {
     if (!endValue || !this.queryForm.get('preStartDate').value) {
       return false;
     }
-    return endValue.getTime() <= this.queryForm.get('preStartDate').value.getTime();
+    return endValue.getTime() < this.queryForm.get('preStartDate').value.getTime();
+  };
+  _disabledStartDate3 = (startValue) => {
+    if (!startValue || !this.queryForm.get('visitEndDate').value) {
+      return false;
+    }
+    return startValue.getTime() >= this.queryForm.get('visitEndDate').value.getTime();
+  };
+  _disabledEndDate3 = (endValue) => {
+    if (!endValue || !this.queryForm.get('visitStartDate').value) {
+      return false;
+    }
+    return endValue.getTime() < this.queryForm.get('visitStartDate').value.getTime();
   };
 
   /* ---------------------- 省市区联动改变事件 ---------------------- */
@@ -133,8 +184,7 @@ export class NewCustomerComponent implements OnInit {
         if (res.code == 1000 && res.result.length) {
           this.storeItems = res.result;
         } else {
-          console.log(11)
-          this.storeItems = [{ id: null, shopName: '该城市下暂无门店' }]
+          this.storeItems = [{ id: '', shopName: '该城市下暂无门店' }]
         }
       })
     }

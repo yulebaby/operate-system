@@ -27,12 +27,17 @@ export class HttpService {
     let urlAddress = url.substr(0, 4) === 'http' ? url : environment.domain + url;
     let params = query;
     params['token'] = this.loginService.userInfo.token;
+    for(let param in params){
+      if (params[param] == null || params[param] == undefined){
+        delete params[param];
+      }
+    }
     return new Promise((resolve, reject) => {
       this.http.post(urlAddress, this.serialize(params), { headers: this.header })
         .retry(1)
         .subscribe(
         res => {
-          if (res['code'] == 1003) {
+          if (res['code'] == 1030) {
             this.router.navigateByUrl('/login');
           } else {
             resolve(res);
@@ -49,12 +54,17 @@ export class HttpService {
     let urlAddress = url.substr(0, 4) === 'http' ? url : environment.domain + url;
     let params = query;
     params['token'] = this.loginService.userInfo.token;
+    for (let param in params) {
+      if (params[param] == null || params[param] == undefined) {
+        delete params[param];
+      }
+    }
     return new Promise((resolve, reject) => {
       this.http.get(urlAddress + '?' + this.serialize(params))
         .retry(1)
         .subscribe(
         res => {
-          if (res['code'] == 1003) {
+          if (res['code'] == 1030) {
             this.router.navigateByUrl('/login');
           } else {
             resolve(res);

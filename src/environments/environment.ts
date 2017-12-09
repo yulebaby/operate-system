@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  domain: 'http://10.1.1.98:8400'
+  domain: 'http://10.1.1.162:8400'
 };

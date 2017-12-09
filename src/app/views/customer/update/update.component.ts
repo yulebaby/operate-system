@@ -48,10 +48,10 @@ export class UpdateComponent implements OnInit, AfterViewChecked {
       customerBabyId: [this._userInfo.customerBabyId],
       secondName: [this._userInfo.secondName, [Validators.required]],
       visitStage: [1],
-      visitInfo: [''],
+      visitInfo: ['', [Validators.required]],
       shopId: [this._userInfo.shopId],
-      precontractDate: ['', [Validators.required]],
-      precontractId: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      precontractDate: [''],
+      precontractId: ['', [Validators.pattern(/^\d+$/)]],
       remark: [''],
       address: required
     })

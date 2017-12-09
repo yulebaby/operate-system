@@ -3,38 +3,38 @@
     <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
       <div nz-form-item nz-row>
         <div nz-form-label nz-col [nzSpan]="5">
-          <label [attr.for]="'phone'">家长电话</label>
+          <label [attr.for]="'parentPhone'">家长电话</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="19">
-          <nz-input nzSize="large" nzPlaceHolder="请输入家长电话" formControlName="phone" nzId="phone"></nz-input>
+          <nz-input nzSize="large" nzPlaceHolder="请输入家长电话" formControlName="parentPhone" nzId="parentPhone"></nz-input>
         </div>
       </div>
     </div>
     <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
       <div nz-form-item nz-row>
         <div nz-form-label nz-col [nzSpan]="5">
-          <label [attr.for]="'name'">宝宝昵称</label>
+          <label [attr.for]="'secondName'">宝宝昵称</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="19">
-          <nz-input [nzSize]="'large'" nzPlaceHolder="请输入宝宝昵称" formControlName="name" nzId="name"></nz-input>
+          <nz-input [nzSize]="'large'" nzPlaceHolder="请输入宝宝昵称" formControlName="secondName" nzId="secondName"></nz-input>
         </div>
       </div>
     </div>
     <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
       <div nz-form-item nz-row>
         <div nz-form-label nz-col [nzSpan]="5">
-          <label [attr.for]="'createTimeStart'">填写日期</label>
+          <label>填写日期</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="19">
-          <nz-datepicker nz-col [nzSpan]="11" formControlName="createTimeStart" [nzSize]="'large'" [nzPlaceHolder]="'开始日期'" [nzFormat]="'YYYY-MM-DD'"
+          <nz-datepicker nz-col [nzSpan]="11" formControlName="filloutStartDate" [nzSize]="'large'" [nzPlaceHolder]="'开始日期'" [nzFormat]="'YYYY-MM-DD'"
             [nzDisabledDate]="_disabledStartDate1"></nz-datepicker>
           <div nz-col [nzSpan]="2" style="text-align: center">-</div>
-          <nz-datepicker nz-col [nzSpan]="11" formControlName="createTimeEnd" [nzSize]="'large'" [nzPlaceHolder]="'结束日期'" [nzFormat]="'YYYY-MM-DD'"
+          <nz-datepicker nz-col [nzSpan]="11" formControlName="filloutEndDate" [nzSize]="'large'" [nzPlaceHolder]="'结束日期'" [nzFormat]="'YYYY-MM-DD'"
             [nzDisabledDate]="_disabledEndDate1"></nz-datepicker>
         </div>
       </div>
     </div>
-    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+    <!-- <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
       <div nz-form-item nz-row>
         <div nz-form-label nz-col [nzSpan]="5">
           <label [attr.for]="'priceStart'">活动价格</label>
@@ -43,6 +43,16 @@
           <nz-input-number nzSize="large" formControlName="priceStart" nzPlaceHolder="最低价格"></nz-input-number>
           <div nz-col [nzSpan]="2" style="text-align: center">-</div>
           <nz-input-number nzSize="large" formControlName="priceEnd" nzPlaceHolder="最高价格" [nzMin]="queryForm.get('priceStart').value"></nz-input-number>
+        </div>
+      </div>
+    </div> -->
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label [attr.for]="'activityPrice'">活动价格</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-input [nzSize]="'large'" nzPlaceHolder="请输入活动价格" formControlName="activityPrice" nzId="activityPrice"></nz-input>
         </div>
       </div>
     </div>
@@ -64,8 +74,21 @@
           <label>所属门店</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="19">
-          <nz-select nzSize="large" formControlName="store" nzPlaceHolder="请选择所属门店" [nzShowSearch]="true" nzAllowClear>
-            <nz-option *ngFor="let option of storeItems" [nzLabel]="option.label" [nzValue]="option" [nzDisabled]="option.disabled">
+          <nz-select nzSize="large" formControlName="shopId" nzPlaceHolder="请选择所属门店" [nzShowSearch]="true" nzAllowClear>
+            <nz-option *ngFor="let option of storeItems" [nzLabel]="option.shopName" [nzValue]="option.id" [nzDisabled]="option.disabled">
+            </nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>客户来源</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-select nzSize="large" formControlName="customerSpreadRelationId" nzPlaceHolder="请选择客户来源" [nzShowSearch]="true" nzAllowClear>
+            <nz-option *ngFor="let option of customerSpreadItems" [nzLabel]="option.name" [nzValue]="option.id" [nzDisabled]="option.disabled">
             </nz-option>
           </nz-select>
         </div>
@@ -77,11 +100,37 @@
           <label [attr.for]="'createTimeStart'">预约日期</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="19">
-          <nz-datepicker nz-col [nzSpan]="11" formControlName="reserveTimeStart" [nzSize]="'large'" [nzPlaceHolder]="'开始日期'" [nzFormat]="'YYYY-MM-DD'"
+          <nz-datepicker nz-col [nzSpan]="11" formControlName="preStartDate" [nzSize]="'large'" [nzPlaceHolder]="'开始日期'" [nzFormat]="'YYYY-MM-DD'"
             [nzDisabledDate]="_disabledStartDate2"></nz-datepicker>
           <div nz-col [nzSpan]="2" style="text-align: center">-</div>
-          <nz-datepicker nz-col [nzSpan]="11" formControlName="reserveTimeEnd" [nzSize]="'large'" [nzPlaceHolder]="'结束日期'" [nzFormat]="'YYYY-MM-DD'"
+          <nz-datepicker nz-col [nzSpan]="11" formControlName="preEndDate" [nzSize]="'large'" [nzPlaceHolder]="'结束日期'" [nzFormat]="'YYYY-MM-DD'"
             [nzDisabledDate]="_disabledEndDate2"></nz-datepicker>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>跟踪时间</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-datepicker 
+            nz-col [nzSpan]="11"
+            formControlName="visitStartDate" 
+            [nzSize]="'large'" 
+            [nzPlaceHolder]="'开始日期'" 
+            [nzFormat]="'YYYY-MM-DD'"
+            [nzDisabledDate]="_disabledStartDate3"
+          ></nz-datepicker>
+          <div nz-col [nzSpan]="2" style="text-align: center">-</div>
+          <nz-datepicker 
+            nz-col [nzSpan]="11"
+            formControlName="visitEndDate" 
+            [nzSize]="'large'" 
+            [nzPlaceHolder]="'结束日期'" 
+            [nzFormat]="'YYYY-MM-DD'" 
+            [nzDisabledDate]="_disabledEndDate3"
+          ></nz-datepicker>
         </div>
       </div>
     </div>
@@ -91,11 +140,14 @@
           <label>状态</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="19">
-          <nz-select nzSize="large" formControlName="status" nzPlaceHolder="请选择状态" [nzShowSearch]="true" nzAllowClear>
+          <nz-select nzSize="large" formControlName="stage" nzPlaceHolder="请选择状态" [nzShowSearch]="true" nzAllowClear>
             <nz-option *ngFor="let option of [
                   { value: 1, label: '首次跟踪' },
                   { value: 2, label: '二次跟踪' },
-                  { value: 3, label: '已预约' }
+                  { value: 3, label: '已预约' },
+                  { value: 4, label: '已分配' },
+                  { value: 5, label: '已体验' },
+                  { value: 6, label: '已办卡' }
                 ]" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled">
             </nz-option>
           </nz-select>
@@ -111,7 +163,7 @@
 
 
 <nz-table #nzTable [nzAjaxData]="tableItems" [nzShowSizeChanger]="true" [nzLoading]="tableInfo.loading" [nzTotal]="tableInfo.total"
-  [(nzPageIndex)]="tableInfo.pageNo" (nzPageIndexChange)="query()" [(nzPageSize)]="tableInfo.pageSize" (nzPageSizeChange)="query(true)">
+  [(nzPageIndex)]="tableInfo.pageNum" (nzPageIndexChange)="query()" [(nzPageSize)]="tableInfo.pageSize" (nzPageSizeChange)="query(true)">
   <thead nz-thead>
     <tr>
       <th nz-th [nzExpand]="true" nzWidth="50px"></th>
@@ -129,6 +181,9 @@
       </th>
       <th nz-th nzWidth="160px">
         <span>归属门店</span>
+      </th>
+      <th nz-th nzWidth="90px">
+        <span>状态</span>
       </th>
       <th nz-th nzWidth="120px">
         <span>预约日期</span>
@@ -149,29 +204,55 @@
           {{ data.checkPhone ? data.checkPhone : ''}}
         </td>
         <td nz-td>{{data.secondName}}</td>
-        <td nz-td>{{data.customerSpreadRelationId}}</td>
+        <td nz-td>{{data.customerSpreadRelationName}}</td>
         <td nz-td>{{data.province + data.city + data.area}}</td>
-        <td nz-td>{{data.shopName}}</td>
-        <td nz-td>{{data.preStartDate}}</td>
+        <td nz-td>{{data.shopName ? data.shopName : '-'}}</td>
         <td nz-td>
-          <a href="javascript: void(0);" (click)="updateCustomerInfo(data)">确认</a>
+          <nz-tag [nzColor]="
+            data.stage == 0 ? 'pink' : 
+            data.stage == 1 ? 'red' : 
+            data.stage == 2 ? 'orange' : 
+            data.stage == 3 ? 'green' : 
+            data.stage == 4 ? 'cyan' : 
+            data.stage == 5 ? 'blue' : 'purple'">{{data.stage == 0 ? '新用户' : data.stage == 1 ? '首次跟踪' : data.stage == 2 ? '二次跟踪' : data.stage == 3 ? '已预约' : data.stage
+            == 4 ? '已分配' : data.stage == 5 ? '已体验' : '已办卡'}}</nz-tag>
+        </td>
+        <td nz-td>{{(data.precontractDate ? data.precontractDate : '-') + ' ' + (data.precontractTime ? data.precontractTime : '-')}}</td>
+        <td nz-td>
+          <a href="javascript: void(0);" (click)="updateCustomerInfo(data)">{{data.stage > 3 ? '-' : '修改预约'}}</a>
         </td>
       </tr>
       <tr nz-tbody-tr *ngIf="data.expand" class="ui-table-expand">
         <td nz-td></td>
         <td nz-td colspan="10">
           <div class="expand-box">
-            <div nz-col [nzSpan]="12">
+            <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
               <label nz-col [nzSpan]="8">填写时间</label>
-              <div nz-col [nzSpan]="16">2017-11-09 23:12:01</div>
+              <div nz-col [nzSpan]="16">{{data.createTime}}</div>
             </div>
-            <div nz-col [nzSpan]="12">
+            <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
               <label nz-col [nzSpan]="8">活动价格</label>
-              <div nz-col [nzSpan]="16">¥12.05</div>
+              <div nz-col [nzSpan]="16">￥{{data.activityPrice}}</div>
             </div>
-            <div nz-col [nzSpan]="24">
-              <label nz-col [nzSpan]="4">备注</label>
-              <div nz-col [nzSpan]="20">多放辣椒多放醋, 多放辣椒多放醋, 多放辣椒多放醋</div>
+            <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+              <label nz-col [nzSpan]="8">跟踪时间</label>
+              <div nz-col [nzSpan]="16">{{data.visitTime}}</div>
+            </div>
+            <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+              <label nz-col [nzSpan]="8">跟踪记录</label>
+              <div nz-col [nzSpan]="16">
+                <nz-tooltip [nzTitle]="data.visitInfo" [nzPlacement]="'top'">
+                  <span nz-tooltip>{{data.visitInfo ? data.visitInfo : '--'}}</span>
+                </nz-tooltip>
+              </div>
+            </div>
+            <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+              <label nz-col [nzSpan]="8">备注</label>
+              <div nz-col [nzSpan]="16">
+                <nz-tooltip [nzTitle]="data.remark" [nzPlacement]="'top'">
+                  <span nz-tooltip>{{data.remark ? data.remark : '--'}}</span>
+                </nz-tooltip>
+              </div>
             </div>
           </div>
         </td>
@@ -179,3 +260,26 @@
     </ng-template>
   </tbody>
 </nz-table>
+
+
+<nz-modal [nzVisible]="isShowAppointment" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel($event)">
+  <ng-template #modalTitle>
+    修改预约时间
+  </ng-template>
+  <ng-template #modalContent>
+    <nz-datepicker [(ngModel)]="_date1" [nzSize]="'large'" nzPlaceHolder="请选择预约日期" [nzDisabledDate]="_disabledDate"></nz-datepicker>
+    <nz-select nzSize="large" [(ngModel)]="_date2" nzPlaceHolder="请选择预约时间" nzAllowClear style="width: 120px">
+      <nz-option *ngFor="let option of _dateItems" [nzLabel]="option.precontractTime" [nzValue]="option.precontractTime" [nzDisabled]="option.disabled">
+      </nz-option>
+    </nz-select>
+  </ng-template>
+  <ng-template #modalFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="handleCancel($event)">
+      返 回
+    </button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleOk($event)" [nzLoading]="isConfirmLoading">
+      提 交
+    </button>
+  </ng-template>
+</nz-modal>
+`,
