@@ -47,9 +47,6 @@ export class AddCustomerComponent implements OnInit {
   resetForm($event: MouseEvent) {
     $event.preventDefault();
     this.validateForm.reset();
-    // for (const key in this.validateForm.controls) {
-    //   this.validateForm.controls[key].markAsPristine();
-    // }
   }
 
   getFormControl(name) {
@@ -67,7 +64,7 @@ export class AddCustomerComponent implements OnInit {
   ) {
     this.validateForm = fb.group({
       secondName: ['', [Validators.required]],
-      parentPhone: ['', [Validators.required, Validators.pattern(/^1[3|5|7|8][0-9]\d{8}$/)]],
+      parentPhone: ['', [Validators.required, Validators.pattern(/^1[3|5|7|8][0-9]\d{8}$/)], [this.parentPhoneAsyncValidator]],
       address: [''],
       province: ['', [Validators.required]],
       city: ['', [Validators.required]],
@@ -121,4 +118,20 @@ export class AddCustomerComponent implements OnInit {
       })
     }
   }
+
+  /* -------------------------- 手机号是否重复验证 ------------------------- */
+  parentPhoneAsyncValidator = (control: FormControl): any => {
+    return Observable.create( (observer) => {
+      this.http.post(`${environment.domain}/customerDetail/selectParentPhone`, {
+        parentPhone: control.value
+      }).then( res => {
+        if(res.code == 1000){
+          observer.next(null)
+        }else{
+          observer.next({error: true, duplicated: true});
+        }
+        observer.complete();
+      })
+    })
+  };
 }
