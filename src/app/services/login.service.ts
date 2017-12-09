@@ -11,6 +11,11 @@ export class LoginService {
   public userInfo: UserInfo;
 
   constructor() {}
+
+  signIn(userInfo): void {
+    this.userInfo = userInfo;
+    window.localStorage.setItem('userInfo', JSON.stringify(userInfo));
+  }
 }
 
 /**
@@ -22,11 +27,11 @@ export class LoginService {
  * @param role     => 角色基本
  */
 export class UserInfo {
-  constructor (
-    public userName: string,
+  constructor(
     public token: string,
-    public sex: number,
-    public img: string,
-    public role: number
+    public userName: string = '',
+    public sex: number = 1,
+    public img: string = '',
+    public role: number = -1,
   ) {}
 }

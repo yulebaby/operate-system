@@ -188,7 +188,7 @@
       <th nz-th nzWidth="120px">
         <span>预约日期</span>
       </th>
-      <th nz-th nzWidth="60px">
+      <th nz-th nzWidth="100px">
         <span>操作</span>
       </th>
     </tr>
@@ -241,7 +241,7 @@
             <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
               <label nz-col [nzSpan]="8">跟踪记录</label>
               <div nz-col [nzSpan]="16">
-                <nz-tooltip [nzTitle]="data.visitInfo" [nzPlacement]="'top'">
+                <nz-tooltip [nzTitle]="data.visitInfo ? data.visitInfo : '暂无'" [nzPlacement]="'top'">
                   <span nz-tooltip>{{data.visitInfo ? data.visitInfo : '--'}}</span>
                 </nz-tooltip>
               </div>
@@ -249,7 +249,7 @@
             <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
               <label nz-col [nzSpan]="8">备注</label>
               <div nz-col [nzSpan]="16">
-                <nz-tooltip [nzTitle]="data.remark" [nzPlacement]="'top'">
+                <nz-tooltip [nzTitle]="data.remark ? data.remark : '暂无'" [nzPlacement]="'top'">
                   <span nz-tooltip>{{data.remark ? data.remark : '--'}}</span>
                 </nz-tooltip>
               </div>

@@ -226,6 +226,9 @@ export class FollowUpCustomerComponent implements OnInit, AfterViewChecked {
         this.isShowAppointment = false;
         this.message.create('success', `修改客户预约时间成功`);
         this.query(true);
+        this._date1 = '';
+        this._date2 = '';
+        this._dateItems = [{ precontractTime: '请选择', precontractId: 0 }];
       } else {
         this.message.create('error', `修改客户预约时间失败`);
       }

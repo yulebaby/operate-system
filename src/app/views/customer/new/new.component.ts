@@ -247,7 +247,7 @@ export class NewCustomerComponent implements OnInit {
     });
     subscription.subscribe(result => {
       if (result === true) {
-        this.message.create('success', `客户预约成功`)
+        this.message.create('success', `跟踪记录添加成功`)
         subscription.destroy();
         this.query(true);
       }
