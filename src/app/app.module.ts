@@ -28,7 +28,7 @@ import { UpdateComponent } from './views/customer/update/update.component';
 import { BaseGuard } from './base/base.guard';
 import { LoginService } from './services/login.service';
 import { CustomerSourceService } from './services/selects/customer-source.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -64,6 +64,7 @@ import { DatePipe } from '@angular/common';
     NgZorroAntdModule.forRoot()
   ],
   providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: NZ_LOCALE, useValue: zhCN},
     AddressService,
     LoginService,

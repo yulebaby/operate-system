@@ -34,17 +34,12 @@ export class SourceComponent implements OnInit {
     return this.validateForm.controls[name];
   }
 
-  emitDataOutside() {
-    this.subject.next('传出数据');
-  }
-
   submitForm = ($event, value) => {
     $event.preventDefault();
     for (const key in this.validateForm.controls) {
       this.validateForm.controls[key].markAsDirty();
     }
-    this.emitDataOutside();
-    console.log(value);
+    this.subject.next('1');
   };
 
   ngOnInit() {

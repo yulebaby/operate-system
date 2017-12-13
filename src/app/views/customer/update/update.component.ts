@@ -93,7 +93,7 @@ export class UpdateComponent implements OnInit, AfterViewChecked {
     Params.precontractDate = this.format.transform(this.validateForm.get('precontractDate').value, 'yyyy-MM-dd');
     this.http.post(`${environment.domain}/customerDetail/updateCustomerPrecontractInfo`, this.validateForm.value).then( res => {
       if(res.code == 1000){
-        this.subject.next(true);
+        this.subject.next('1');
       }
     })
   };

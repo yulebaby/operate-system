@@ -219,7 +219,8 @@ export class FollowUpCustomerComponent implements OnInit, AfterViewChecked {
     this.http.post(`${environment.domain}/precontractInfo/update`, {
       appointmentId: this.updateItem.appointmentId,
       precontractDate: this.format.transform(this._date1, 'yyyy-MM-dd'),
-      precontractTime: this._date2,
+      precontractId: this._date2,
+      id: this.updateItem['id'],
       stage: this.updateItem['stage']
     }).then( res => {
       if(res.code == 1000){
@@ -230,7 +231,7 @@ export class FollowUpCustomerComponent implements OnInit, AfterViewChecked {
         this._date2 = '';
         this._dateItems = [{ precontractTime: '请选择', precontractId: 0 }];
       } else {
-        this.message.create('error', `修改客户预约时间失败`);
+        this.message.create('error', res.info);
       }
     })
   }

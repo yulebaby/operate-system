@@ -269,7 +269,7 @@
   <ng-template #modalContent>
     <nz-datepicker [(ngModel)]="_date1" [nzSize]="'large'" nzPlaceHolder="请选择预约日期" [nzDisabledDate]="_disabledDate"></nz-datepicker>
     <nz-select nzSize="large" [(ngModel)]="_date2" nzPlaceHolder="请选择预约时间" nzAllowClear style="width: 120px">
-      <nz-option *ngFor="let option of _dateItems" [nzLabel]="option.precontractTime" [nzValue]="option.precontractTime" [nzDisabled]="option.disabled">
+      <nz-option *ngFor="let option of _dateItems" [nzLabel]="option.precontractTime" [nzValue]="option.precontractId" [nzDisabled]="option.status">
       </nz-option>
     </nz-select>
   </ng-template>
@@ -282,4 +282,3 @@
     </button>
   </ng-template>
 </nz-modal>
-`,

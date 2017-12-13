@@ -12,12 +12,14 @@ export class BaseGuard implements CanActivate {
 
   canActivate(): boolean | Promise<boolean> {
     try {
-      const userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
+      // const userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
+      const userInfo = {token: 'token'}
       this.login.signIn(userInfo);
       if(!userInfo){
         this.router.navigateByUrl('/login');
       }
-      return !!userInfo;
+      // return !!userInfo;
+      return true;
     } catch (err) {
       return false;
     }

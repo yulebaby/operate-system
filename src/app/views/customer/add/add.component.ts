@@ -35,7 +35,7 @@ export class AddCustomerComponent implements OnInit {
     this.http.post(`${environment.domain}/customerDetail/insert`, this.validateForm.value).then(res => {
       this.submitLoading = false;
       if (res.code == 1000) {
-        this.subject.next(true);
+        this.subject.next('1');
       }else if(res.code == 1003){
         this.message.create('error', res.info);
       }

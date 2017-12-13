@@ -109,24 +109,6 @@ export class NewCustomerComponent implements OnInit {
   }
   resetForm (): void {
     this.queryForm.reset();
-    this.queryForm.patchValue({
-      parentPhone: '',
-      secondName: '',
-      filloutStartDate: '',
-      filloutEndDate: '',
-      customerSpreadRelationId: '',
-      activityPrice: '',
-      provinceCode: '',
-      cityCode: '',
-      areaCode: '',
-      address: [],
-      shopId: '',
-      preStartDate: '',
-      preEndDate: '',
-      stage: '',
-      visitStartDate: '',
-      visitEndDate: ''
-    });
     this.storeItems = [{ id: '', shopName: '请选择省市区' }];
   }
 
@@ -198,7 +180,7 @@ export class NewCustomerComponent implements OnInit {
       footer: false,
     });
     subscription.subscribe(result => {
-      if(result === true){
+      if(result === '1'){
         this.message.create('success', `新增用户信息成功`)
         subscription.destroy();
         this.query(true);
@@ -214,8 +196,8 @@ export class NewCustomerComponent implements OnInit {
       footer: false,
     });
     subscription.subscribe(result => {
-      if (result === true) {
-        this.message.create('success', `新增用户信息成功`)
+      if (result === '1') {
+        this.message.create('success', `新增客户来源成功`)
         subscription.destroy();
       }
     })
@@ -246,7 +228,7 @@ export class NewCustomerComponent implements OnInit {
       }
     });
     subscription.subscribe(result => {
-      if (result === true) {
+      if (result === '1') {
         this.message.create('success', `跟踪记录添加成功`)
         subscription.destroy();
         this.query(true);
