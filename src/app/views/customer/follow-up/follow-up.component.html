@@ -227,6 +227,14 @@
         <td nz-td colspan="10">
           <div class="expand-box">
             <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+              <label nz-col [nzSpan]="8">宝宝类型</label>
+              <div nz-col [nzSpan]="16">{{data.babyType == 1 ? '幼儿' : data.babyType == 0 ? '婴儿' : '-'}}</div>
+            </div>
+            <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+              <label nz-col [nzSpan]="8">宝宝生日</label>
+              <div nz-col [nzSpan]="16">{{data.birthday ? data.birthday :'-'}}</div>
+            </div>
+            <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
               <label nz-col [nzSpan]="8">填写时间</label>
               <div nz-col [nzSpan]="16">{{data.createTime}}</div>
             </div>

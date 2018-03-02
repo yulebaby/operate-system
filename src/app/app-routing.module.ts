@@ -1,5 +1,6 @@
+import { XiaochengxuComponent } from './views/xiaochengxu/xiaochengxu.component';
 import { BaseGuard } from './base/base.guard';
-import { NewCustomerComponent } from './views/customer/new/new.component';
+import { CustomerComponent } from './views/customer/customer.component';
 import { FollowUpCustomerComponent } from './views/customer/follow-up/follow-up.component';
 import { MessageComponent } from './base/message/message.component';
 import { WelcomeComponent } from './base/welcome/welcome.component';
@@ -8,6 +9,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { BaseComponent } from './base/base.component';
 import { LoginComponent } from './base/login/login.component';
 import { NotFountComponent } from './base/not-fount/not-fount.component';
+import { ContentGuard } from './base/content/content.guard';
 
 const routes: Routes = [
   {
@@ -37,12 +39,12 @@ const routes: Routes = [
         component: MessageComponent
       },
       {
-        path: 'newcustomer',
-        component: NewCustomerComponent
+        path: 'customer/:type',
+        component: CustomerComponent
       },
       {
-        path: 'followupcustomer',
-        component: FollowUpCustomerComponent
+        path: 'xiaochengxu',
+        component: XiaochengxuComponent
       }
     ]
   },

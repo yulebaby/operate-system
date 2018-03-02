@@ -1,3 +1,4 @@
+import { XiaochengxuComponent } from './views/xiaochengxu/xiaochengxu.component';
 import { AddressService } from './services/selects/address.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,7 +19,7 @@ import { LoginComponent } from './base/login/login.component';
 import { NotFountComponent } from './base/not-fount/not-fount.component';
 import { MessageComponent } from './base/message/message.component';
 import { FollowUpCustomerComponent } from './views/customer/follow-up/follow-up.component';
-import { NewCustomerComponent } from './views/customer/new/new.component';
+import { CustomerComponent } from './views/customer/customer.component';
 import { AddCustomerComponent } from './views/customer/add/add.component';
 import { BatchImportComponent } from './views/customer/batch-import/batch-import.component';
 import { SourceComponent } from './views/customer/source/source.component';
@@ -29,6 +30,7 @@ import { BaseGuard } from './base/base.guard';
 import { LoginService } from './services/login.service';
 import { CustomerSourceService } from './services/selects/customer-source.service';
 import { DatePipe, LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { ContentGuard } from './base/content/content.guard';
 
 @NgModule({
   declarations: [
@@ -43,11 +45,12 @@ import { DatePipe, LocationStrategy, HashLocationStrategy } from '@angular/commo
     NotFountComponent,
     MessageComponent,
     FollowUpCustomerComponent,
-    NewCustomerComponent,
+    CustomerComponent,
     AddCustomerComponent,
     BatchImportComponent,
     SourceComponent,
-    UpdateComponent
+    UpdateComponent,
+    XiaochengxuComponent
   ],
   entryComponents: [
     AddCustomerComponent,
@@ -70,6 +73,7 @@ import { DatePipe, LocationStrategy, HashLocationStrategy } from '@angular/commo
     LoginService,
     HttpService,
     BaseGuard,
+    ContentGuard,
     CustomerSourceService,
     DatePipe
   ],

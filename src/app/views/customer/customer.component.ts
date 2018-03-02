@@ -1,21 +1,22 @@
 import { DatePipe } from '@angular/common';
-import { environment } from './../../../../environments/environment';
-import { CustomerSourceService } from './../../../services/selects/customer-source.service';
-import { UpdateComponent } from './../update/update.component';
-import { AddressService } from './../../../services/selects/address.service';
-import { Component, OnInit } from '@angular/core';
+import { environment } from './../../../environments/environment';
+import { CustomerSourceService } from './../../services/selects/customer-source.service';
+import { UpdateComponent } from './update/update.component';
+import { AddressService } from '../../services/selects/address.service';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { AddCustomerComponent } from '../add/add.component';
+import { AddCustomerComponent } from './add/add.component';
 import { NzModalService, NzMessageService, NzNotificationService } from 'ng-zorro-antd';
-import { SourceComponent } from '../source/source.component';
-import { HttpService } from '../../../services/http.service';
+import { SourceComponent } from './source/source.component';
+import { HttpService } from '../../services/http.service';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
-  selector: 'app-new',
-  templateUrl: './new.component.html',
-  styleUrls: ['./new.component.scss']
+  selector: 'app-customer',
+  templateUrl: './customer.component.html',
+  styleUrls: ['./customer.component.scss']
 })
-export class NewCustomerComponent implements OnInit {
+export class CustomerComponent implements OnInit, AfterViewChecked {
 
   /* ------------------- 查询条件表单模型 ------------------- */
   public queryForm: FormGroup;
@@ -31,6 +32,10 @@ export class NewCustomerComponent implements OnInit {
   public customerSpreadItems: any[];
 
 
+
+  /* -------------------- 状态 --------------------- */
+  public customerStatus: number = 1;
+
   constructor(
     private fb: FormBuilder = new FormBuilder(),
     private address: AddressService,
@@ -39,7 +44,8 @@ export class NewCustomerComponent implements OnInit {
     private _notification: NzNotificationService,
     private http: HttpService,
     private source: CustomerSourceService,
-    private format: DatePipe
+    private format: DatePipe,
+    private router: ActivatedRoute
   ) { 
     if (!address.addressItems.length) {
       this.http.get(`${environment.domain}/common/getAllProvinceCityArea`).then(res => {
@@ -58,36 +64,50 @@ export class NewCustomerComponent implements OnInit {
     } else {
       this.customerSpreadItems = source.sourceItems
     }
+
+    router.params.subscribe((params: Params) => {
+      this.customerStatus = typeof params['type'] === 'string' ? Number(params['type']) : params['type'];
+      this.queryForm = this.fb.group({
+        parentPhone: [''],
+        secondName: [''],
+        filloutStartDate: [''],
+        filloutEndDate: [''],
+        customerSpreadRelationId: [''],
+        activityPrice: [''],
+        provinceCode: [''],
+        cityCode: [''],
+        areaCode: [''],
+        address: [],
+        shopId: [''],
+        preStartDate: [''],
+        preEndDate: [''],
+        stage: [''],
+        visitStartDate: [''],
+        visitEndDate: ['']
+      });
+
+
+      this.requestPath = this.customerStatus === 2 ? '/customerDetail/selectCustomerDetailList' :
+                          this.customerStatus === 3 ? '/customerDetail/selectFollowCustomerDetailList' :
+                          this.customerStatus === 4 ? '/customerDetail/selectAppointmentCustomerDetailList' :
+                          this.customerStatus === 5 ? '/customerDetail/selectExperienceCustomerDetailList' : 
+                          this.customerStatus === 6 ? '/customerDetail/selectInvalidCustomerDetailList' : 
+                          '/customerDetail/selectAllCustomerDetailList'
+      this.query();
+    });
   }
 
-  ngOnInit() {
-    this.queryForm = this.fb.group({
-      parentPhone: [''],
-      secondName: [''],
-      filloutStartDate: [''],
-      filloutEndDate: [''],
-      customerSpreadRelationId: [''],
-      activityPrice: [''],
-      provinceCode: [''],
-      cityCode: [''],
-      areaCode: [''],
-      address: [],
-      shopId: [''],
-      preStartDate: [''],
-      preEndDate: [''],
-      stage: [''],
-      visitStartDate: [''],
-      visitEndDate: ['']
-    });
+  private requestPath: string;
 
-    this.query();
+
+  ngOnInit() {
   }
 
 
 
   /* --------------------------- 根据筛选条件查询/重置 --------------------------- */
   public tableItems = [];
-  query(reset = false): void {
+  query(reset: boolean = false): void {
     this.tableInfo.loading = true;
     const Params = this.queryForm.value;
     Params.pageNum = reset ? 1 : this.tableInfo.pageNum;
@@ -98,7 +118,7 @@ export class NewCustomerComponent implements OnInit {
     if (Params.preEndDate) Params.preEndDate = this.format.transform(Params.preEndDate, 'yyyy-MM-dd');
     if (Params.visitStartDate) Params.visitStartDate = this.format.transform(Params.visitStartDate, 'yyyy-MM-dd');
     if (Params.visitEndDate) Params.visitEndDate = this.format.transform(Params.visitEndDate, 'yyyy-MM-dd');
-    this.http.post(`${environment.domain}/customerDetail/selectCustomerDetailList`, this.queryForm.value).then((res: any) => {
+    this.http.post(`${environment.domain}${this.requestPath}`, this.queryForm.value).then((res: any) => {
       this.tableInfo.loading = false;
       this.tableInfo.total = res.result.total;
       this.tableItems = res.result.list;
@@ -246,6 +266,121 @@ export class NewCustomerComponent implements OnInit {
       })
     })
   }
+
+
+
+  /* ----------------------- 修改预约时间 ------------------------ */
+  public isShowAppointment: boolean = false;
+  public _date1 = '';
+  public _date2: any = 0;
+  public _dateItems: object[] = [{ precontractTime: '请选择', precontractId: -1, status: true}];
+
+  private updateItem: any;
+  updateAppoinTime(item: object): void {
+    if (item['stage'] != 3) return;
+
+    this.isShowAppointment = true;
+    this.updateItem = item;
+
+  }
+  handleCancel(e) {
+    this.isShowAppointment = false;
+  }
+  handleOk(e) {
+    this.http.post(`${environment.domain}/precontractInfo/update`, {
+      appointmentId: this.updateItem.appointmentId,
+      precontractDate: this.format.transform(this._date1, 'yyyy-MM-dd'),
+      precontractId: this._date2,
+      id: this.updateItem['id'],
+      stage: this.updateItem['stage']
+    }).then(res => {
+      if (res.code == 1000) {
+        this.isShowAppointment = false;
+        this.message.create('success', `修改客户预约时间成功`);
+        this.query(true);
+        this._date1 = '';
+        this._date2 = 0;
+        this._dateItems = [{ precontractTime: '请选择', precontractId: -1, status: true}];
+      } else {
+        this.message.create('error', res.info);
+      }
+    })
+  }
+
+  _disabledDate = function (current) {
+    return current && current.getTime() < Date.now();
+  };
+  /* -------------------------- 监测视图变化判断日期是否发生改变 -------------------------- */
+  private beforeTime: any;
+  ngAfterViewChecked() {
+    if (this.beforeTime !== this._date1 && this.updateItem) {
+      this._date2 = 0;
+      this.beforeTime = this._date1;
+      this.http.post(`${environment.domain}/customerDetail/findPrecontractTimes`, {
+        precontractDate: this.format.transform(this._date1, 'yyyy-MM-dd'),
+        shopId: this.updateItem['shopId']
+      }).then(res => {
+        if (res.code == 1000) {
+          this._dateItems = res.result;
+        } else {
+          this._dateItems = [{ precontractTime: '没有可预约时间', precontractId: -1, status: true }]
+        }
+      })
+    }
+  }
+
+
+
+  /**
+   * 确认无效客户
+   */
+  confirm = (data) => {
+    this.http.post(`${environment.domain}/manager/updateBabyState`, {
+      customerBabyId: data.customerBabyId
+    }).then( res => {
+      if (res.code == 1000) {
+        this.message.success('删除为无效客户成功');
+        this.tableItems = this.tableItems.filter(item => item.customerBabyId != data.customerBabyId);
+      }else{
+        this.message.error(res.info);
+      }
+    })
+  };
+
+
+
+  /**
+   * 生成链接
+   */
+  generaLink (data): void {
+    this.http.post(`${environment.domain}/manager/generateValue`, {
+      CustomerBabyId: data.customerBabyId
+    }).then(res => {
+      if (res.code == 1000) {
+        this._notification.create('success', '生成链接成功', `http://stat.beibeiyue.com/keduoduo/invitation/index.html?code=${res.result}`, { nzDuration: 0 });
+        // this._notification.create('success', '生成链接成功', `http://10.1.1.198:8082/index.html?code=${res.result}`, { nzDuration: 0 });
+      } else {
+        this.message.error(`生成链接失败`);
+      }
+    })
+  }
+
+  /**
+   * 查看转化数
+   */
+  getConversionCount (data): void {
+    this.http.post(`${environment.domain}/manager/getSoleCodeCount`, {
+      CustomerBabyId: data.customerBabyId
+    }).then(res => {
+      this.tableItems.map( result => {
+        if (result.customerBabyId === data.customerBabyId) {
+          result.conversionCount = res.result;
+        }
+      });
+    })
+  }
+
+
 
 }
 

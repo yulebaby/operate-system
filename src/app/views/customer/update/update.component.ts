@@ -28,7 +28,7 @@ export class UpdateComponent implements OnInit, AfterViewChecked {
   public addressItems: object[];
 
   /* ----------- 可预约时间 ----------- */
-  public timeItems: object[];
+  public timeItems: any[];
 
   constructor(
     private fb: FormBuilder = new FormBuilder(),
@@ -48,6 +48,8 @@ export class UpdateComponent implements OnInit, AfterViewChecked {
       customerBabyId: [this._userInfo.customerBabyId],
       secondName: [this._userInfo.secondName, [Validators.required]],
       visitStage: [1],
+      birthday: [this._userInfo.birthday],
+      babyType: [this._userInfo.babyType, [Validators.required]],
       visitInfo: [this._userInfo.visitInfo, [Validators.required]],
       shopId: [this._userInfo.shopId],
       precontractDate: [''],
@@ -91,6 +93,14 @@ export class UpdateComponent implements OnInit, AfterViewChecked {
     }
     const Params = this.validateForm.value;
     Params.precontractDate = this.format.transform(this.validateForm.get('precontractDate').value, 'yyyy-MM-dd');
+    Params.birthday = this.format.transform(this.validateForm.get('birthday').value, 'yyyy-MM-dd');
+    if (Params.precontractId) {
+      this.timeItems.map( res => {
+        if (res.precontractId === Params.precontractId){
+          Params.precontractTime = res.precontractTime
+        }
+      })
+    }
     this.http.post(`${environment.domain}/customerDetail/updateCustomerPrecontractInfo`, this.validateForm.value).then( res => {
       if(res.code == 1000){
         this.subject.next('1');

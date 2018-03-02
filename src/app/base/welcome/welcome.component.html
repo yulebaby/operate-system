@@ -1,3 +1,21 @@
-<p>
-  welcome works!
-</p>
+<nz-card>
+  <ng-template #title>
+    工作成果
+  </ng-template>
+  <ng-template #extra>
+    <nz-datepicker 
+      [(ngModel)]="itemTime" 
+      nzSize="small"
+      [nzDisabledDate]="_disabledDate"
+      nzPlaceHolder="请选择日期"></nz-datepicker>
+  </ng-template>
+  <ng-template #body>
+    <div nz-row>
+      <div class="item" nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24" *ngFor="let item of shopItems">
+        <p>{{ itemTime | date: 'yyyy-MM-dd' }}</p>
+        <p>平台推送了 {{item.counts}} 条宝宝信息给 {{item.shopName}}</p>
+      </div>
+      <div nz-col [nzSpan]="24" *ngIf="!shopItems.length" align="center">暂时没有信息</div>
+    </div>
+  </ng-template>
+</nz-card>

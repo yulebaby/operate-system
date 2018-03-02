@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
+    "testing": "ng build --prod --env=test",
     "start": "ng serve --port 8077 --open",
     "build": "ng build --prod",
     "test": "ng test",
