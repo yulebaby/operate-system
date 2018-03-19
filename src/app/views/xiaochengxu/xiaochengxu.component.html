@@ -3,6 +3,55 @@
     <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
       <div nz-form-item nz-row>
         <div nz-form-label nz-col [nzSpan]="5">
+          <label>宝宝性别</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-select nzSize="large" formControlName="babySex" nzPlaceHolder="请选择宝宝性别" nzAllowClear>
+            <nz-option *ngFor="let option of [
+                  { value: 1, label: '小王子' },
+                  { value: 2, label: '小公主' }
+                ]" [nzLabel]="option.label" [nzValue]="option.value">
+            </nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>手机验证</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-select nzSize="large" formControlName="verify" nzPlaceHolder="请选择手机验证状态" nzAllowClear>
+            <nz-option *ngFor="let option of [
+                  { value: 0, label: '未验证' },
+                  { value: 1, label: '已验证' }
+                ]" [nzLabel]="option.label" [nzValue]="option.value">
+            </nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>奖励状态</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-select nzSize="large" formControlName="wxCustomerAnswerState" nzPlaceHolder="请选择奖励状态" nzAllowClear>
+            <nz-option *ngFor="let option of [
+                  { value: 0, label: '发放' },
+                  { value: 1, label: '未发放' },
+                  { value: 2, label: '未知' }
+                ]" [nzLabel]="option.label" [nzValue]="option.value">
+            </nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
           <label [attr.for]="'parentPhone'">家长电话</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="19">
@@ -21,6 +70,108 @@
       </div>
     </div>
     <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>填写日期</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-datepicker nz-col [nzSpan]="11" formControlName="filloutStartDate" [nzSize]="'large'" [nzPlaceHolder]="'开始日期'" [nzFormat]="'YYYY-MM-DD'"
+            [nzDisabledDate]="_disabledStartDate1"></nz-datepicker>
+          <div nz-col [nzSpan]="2" style="text-align: center">-</div>
+          <nz-datepicker nz-col [nzSpan]="11" formControlName="filloutEndDate" [nzSize]="'large'" [nzPlaceHolder]="'结束日期'" [nzFormat]="'YYYY-MM-DD'"
+            [nzDisabledDate]="_disabledEndDate1"></nz-datepicker>
+        </div>
+      </div>
+    </div>
+    <!-- <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label [attr.for]="'priceStart'">活动价格</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-input-number nzSize="large" formControlName="priceStart" nzPlaceHolder="最低价格"></nz-input-number>
+          <div nz-col [nzSpan]="2" style="text-align: center">-</div>
+          <nz-input-number nzSize="large" formControlName="priceEnd" nzPlaceHolder="最高价格" [nzMin]="queryForm.get('priceStart').value"></nz-input-number>
+        </div>
+      </div>
+    </div> -->
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label [attr.for]="'activityPrice'">活动价格</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-input [nzSize]="'large'" nzPlaceHolder="请输入活动价格" formControlName="activityPrice" nzId="activityPrice"></nz-input>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>省市区</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-cascader formControlName="address" nzSize="large" [nzOptions]="addressItems" nzPlaceHolder="省市区" [nzChangeOnSelect]="true"
+            (nzChange)="_addressChange($event)">
+          </nz-cascader>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>所属门店</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-select nzSize="large" formControlName="shopId" nzPlaceHolder="请选择所属门店" [nzShowSearch]="true" nzAllowClear>
+            <nz-option *ngFor="let option of storeItems" [nzLabel]="option.shopName" [nzValue]="option.id" [nzDisabled]="option.disabled">
+            </nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>客户来源</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-select nzSize="large" formControlName="customerSpreadRelationId" nzPlaceHolder="请选择客户来源" [nzShowSearch]="true" nzAllowClear>
+            <nz-option *ngFor="let option of customerSpreadItems" [nzLabel]="option.name" [nzValue]="option.id" [nzDisabled]="option.disabled">
+            </nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>预约日期</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-datepicker nz-col [nzSpan]="11" formControlName="preStartDate" [nzSize]="'large'" [nzPlaceHolder]="'开始日期'" [nzFormat]="'YYYY-MM-DD'"
+            [nzDisabledDate]="_disabledStartDate2"></nz-datepicker>
+          <div nz-col [nzSpan]="2" style="text-align: center">-</div>
+          <nz-datepicker nz-col [nzSpan]="11" formControlName="preEndDate" [nzSize]="'large'" [nzPlaceHolder]="'结束日期'" [nzFormat]="'YYYY-MM-DD'"
+            [nzDisabledDate]="_disabledEndDate2"></nz-datepicker>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>跟踪时间</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="19">
+          <nz-datepicker nz-col [nzSpan]="11" formControlName="visitStartDate" [nzSize]="'large'" [nzPlaceHolder]="'开始日期'" [nzFormat]="'YYYY-MM-DD'"
+            [nzDisabledDate]="_disabledStartDate3"></nz-datepicker>
+          <div nz-col [nzSpan]="2" style="text-align: center">-</div>
+          <nz-datepicker nz-col [nzSpan]="11" formControlName="visitEndDate" [nzSize]="'large'" [nzPlaceHolder]="'结束日期'" [nzFormat]="'YYYY-MM-DD'"
+            [nzDisabledDate]="_disabledEndDate3"></nz-datepicker>
+        </div>
+      </div>
+    </div>
+    <div nz-col [nzXl]="6" [nzLg]="8" [nzSm]="12" [nzXs]="24" *ngIf="customerStatus === 1">
       <div nz-form-item nz-row>
         <div nz-form-label nz-col [nzSpan]="5">
           <label>状态</label>
@@ -47,3 +198,69 @@
     </div>
   </div>
 </form>
+
+
+<nz-table #nzTable [nzAjaxData]="tableItems" [nzShowSizeChanger]="true" [nzLoading]="tableInfo.loading" [nzTotal]="tableInfo.total"
+  [(nzPageIndex)]="tableInfo.pageNum" (nzPageIndexChange)="query()" [(nzPageSize)]="tableInfo.pageSize" [nzShowQuickJumper]="true"
+  [nzShowTotal]="true" (nzPageSizeChange)="query(true)">
+  <thead nz-thead>
+    <tr>
+      <th nz-th nzWidth="140px">
+        <span>微信名称</span>
+      </th>
+      <th nz-th nzWidth="60px">
+        <span>宝宝性别</span>
+      </th>
+      <th nz-th nzWidth="60px">
+        <span>家长性别</span>
+      </th>
+      <th nz-th nzWidth="120px">
+        <span>所在地址</span>
+      </th>
+      <th nz-th nzWidth="120px">
+        <span>录入时间</span>
+      </th>
+      <th nz-th nzWidth="120px">
+        <span>宝宝生日</span>
+      </th>
+      <th nz-th nzWidth="120px">
+        <span>客户来源</span>
+      </th>
+      <th nz-th nzWidth="120px">
+        <span>得奖状态</span>
+      </th>
+      <th nz-th nzWidth="120px">
+        <span>手机验证</span>
+      </th>
+      <th nz-th nzWidth="120px">
+        <span>手机号码</span>
+      </th>
+      <th nz-th nzWidth="80px">
+        <span>转换数</span>
+      </th>
+      <th nz-th nzWidth="80px">
+        <span>操作</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody nz-tbody>
+    <ng-template ngFor let-data [ngForOf]="nzTable.data">
+      <tr nz-tbody-tr>
+        <td nz-td>{{ data.nickName }}</td>
+        <td nz-td>{{ data.babySex == null ? '-' : data.babySex == 1 ? '小王子' : '小公主' }}</td>
+        <td nz-td>{{ data.sex == null || data.sex == 0 ? '-' : data.sex == 1 ? '小王子' : '小公主' }}</td>
+        <td nz-td>{{ data.country }} {{ data.province }} {{ data.city }}</td>
+        <td nz-td>{{ data.createTime }}</td>
+        <td nz-td>{{ data.babyBirthday }}</td>
+        <td nz-td>{{ data.spreadId }}</td>
+        <td nz-td>{{ data.wxCustomerAnswerState == 0 ? '发放' : data.wxCustomerAnswerState == 1 ? '未发放' : '未知' }}</td>
+        <td nz-td>{{ data.verify ? '验证' : '未验证' }}</td>
+        <td nz-td>{{ data.phone }}</td>
+        <td nz-td>{{ data.conversionNumber }}</td>
+        <td nz-td>
+          <a href="javascript: void(0);">关系图</a>
+        </td>
+      </tr>
+    </ng-template>
+  </tbody>
+</nz-table>

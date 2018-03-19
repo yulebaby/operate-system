@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  domain: 'http://10.1.1.162:8400'
+  domain: 'http://192.168.1.123:8081'
+  // domain: 'http://keduo.beibeiyue.com/k'
 };

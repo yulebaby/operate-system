@@ -357,8 +357,7 @@ export class CustomerComponent implements OnInit, AfterViewChecked {
       CustomerBabyId: data.customerBabyId
     }).then(res => {
       if (res.code == 1000) {
-        this._notification.create('success', '生成链接成功', `http://stat.beibeiyue.com/keduoduo/invitation/index.html?code=${res.result}`, { nzDuration: 0 });
-        // this._notification.create('success', '生成链接成功', `http://10.1.1.198:8082/index.html?code=${res.result}`, { nzDuration: 0 });
+        this._notification.create('success', '生成链接成功', `http://wx.beibeiyue.com/publicnum/index.html?code=${res.result}`, { nzDuration: 0 });
       } else {
         this.message.error(`生成链接失败`);
       }
