@@ -1,3 +1,4 @@
+import { TreeComponent } from './tree/tree.component';
 import { DatePipe } from '@angular/common';
 import { environment } from './../../../environments/environment';
 import { CustomerSourceService } from './../../services/selects/customer-source.service';
@@ -191,6 +192,20 @@ export class XiaochengxuComponent implements OnInit {
 
 
 
+
+  showTreeModal(id): void {
+    const subscription = this.modalService.open({
+      title: '关系图',
+      content: TreeComponent,
+      footer: false,
+      componentParams: {
+        id
+      }
+    });
+    subscription.subscribe(result => {
+      // console.log(result);
+    })
+  }
 
 
 

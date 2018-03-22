@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "testing": "ng build --prod --env=test",
-    "start": "ng serve --port 8076 --open",
+    "start": "ng serve --port 8076",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
     "core-js": "^2.4.1",
+    "ng-tree-antd": "^2.2.3",
     "ng-zorro-antd": "^0.6.2",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"

@@ -367,15 +367,14 @@ export class CustomerComponent implements OnInit, AfterViewChecked {
   /**
    * 查看转化数
    */
-  getConversionCount (data): void {
-    this.http.post(`${environment.domain}/manager/getSoleCodeCount`, {
-      CustomerBabyId: data.customerBabyId
-    }).then(res => {
-      this.tableItems.map( result => {
-        if (result.customerBabyId === data.customerBabyId) {
-          result.conversionCount = res.result;
-        }
-      });
+  isShowAwardCount: boolean;
+  awardList       : any[] = [];
+  previewCount(id): void {
+    this.http.post('/manager/getSoleCodeCount', { customerBabyId: id }).then( res => {
+      this.isShowAwardCount = res.code == 1000;
+      if (res.code == 1000) {
+        this.awardList = res.result;
+      }
     })
   }
 

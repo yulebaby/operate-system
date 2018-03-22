@@ -1,3 +1,4 @@
+import { NzTreeModule } from 'ng-tree-antd';
 import { XiaochengxuComponent } from './views/xiaochengxu/xiaochengxu.component';
 import { AddressService } from './services/selects/address.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -31,6 +32,7 @@ import { LoginService } from './services/login.service';
 import { CustomerSourceService } from './services/selects/customer-source.service';
 import { DatePipe, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { ContentGuard } from './base/content/content.guard';
+import { TreeComponent } from './views/xiaochengxu/tree/tree.component';
 
 @NgModule({
   declarations: [
@@ -50,12 +52,14 @@ import { ContentGuard } from './base/content/content.guard';
     BatchImportComponent,
     SourceComponent,
     UpdateComponent,
-    XiaochengxuComponent
+    XiaochengxuComponent,
+    TreeComponent
   ],
   entryComponents: [
     AddCustomerComponent,
     SourceComponent,
-    UpdateComponent
+    UpdateComponent,
+    TreeComponent
   ],
   imports: [
     FormsModule,
@@ -64,6 +68,7 @@ import { ContentGuard } from './base/content/content.guard';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    NzTreeModule,
     NgZorroAntdModule.forRoot()
   ],
   providers: [

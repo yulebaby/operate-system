@@ -258,7 +258,7 @@
         <td nz-td>{{ data.phone }}</td>
         <td nz-td>{{ data.conversionNumber }}</td>
         <td nz-td>
-          <a href="javascript: void(0);">关系图</a>
+          <a *ngIf="data.conversionNumber > 0" href="javascript: void(0);" (click)="showTreeModal(data.wxCustomerId)">关系图</a>
         </td>
       </tr>
     </ng-template>
