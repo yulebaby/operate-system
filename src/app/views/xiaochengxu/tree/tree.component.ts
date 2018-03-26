@@ -1,6 +1,5 @@
 import { HttpService } from './../../../services/http.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { resolve } from 'path';
 
 @Component({
   selector: 'app-tree',
