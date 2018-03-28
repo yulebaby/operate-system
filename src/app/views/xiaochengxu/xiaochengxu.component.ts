@@ -29,7 +29,10 @@ export class XiaochengxuComponent implements OnInit {
   public storeItems: any[] = [{ id: '', shopName: '请选择省市区' }];
 
   /* -------------------- 客户来源集合 --------------------- */
-  public customerSpreadItems: any[];
+  public customerSpreadItems: any[] = [
+    { name: '宝妈快答', id: 10 },
+    { name: '宝妈福袋', id: 11 }
+  ];
 
 
   constructor(
@@ -52,37 +55,15 @@ export class XiaochengxuComponent implements OnInit {
       this.addressItems = address.addressItems;
     }
 
-    if (!source.sourceItems.length) {
-      this.http.post(`${environment.domain}/common/selectSpreadRelations`).then(res => {
-        source.sourceItems = res.result || [];
-        this.customerSpreadItems = res.result || [];
-      })
-    } else {
-      this.customerSpreadItems = source.sourceItems
-    }
 
 
     this.queryForm = this.fb.group({
-      parentPhone: [''],
-      secondName: [''],
-      filloutStartDate: [''],
-      filloutEndDate: [''],
-      customerSpreadRelationId: [''],
-      activityPrice: [''],
-      provinceCode: [''],
-      cityCode: [''],
-      areaCode: [''],
-      address: [],
-      shopId: [''],
-      preStartDate: [''],
-      preEndDate: [''],
-      stage: [''],
-      visitStartDate: [''],
-      visitEndDate: [''],
-
-
       babySex: [''],                          // 宝宝性别
       verify: [''],                           // 是否通过手机验证
+      spreadId: [''],
+      phone: [''],
+      createStartTime: [''],
+      createEndTime: [''],
       wxCustomerAnswerState: ['']             // 领奖状态
     });
 
@@ -103,8 +84,8 @@ export class XiaochengxuComponent implements OnInit {
     const Params = this.queryForm.value;
     Params.pageNum = reset ? 1 : this.tableInfo.pageNum;
     Params.pageSize = this.tableInfo.pageSize;
-    if (Params.filloutStartDate) Params.filloutStartDate = this.format.transform(Params.filloutStartDate, 'yyyy-MM-dd');
-    if (Params.filloutEndDate) Params.filloutEndDate = this.format.transform(Params.filloutEndDate, 'yyyy-MM-dd');
+    if (Params.createStartTime) Params.createStartTime = this.format.transform(Params.createStartTime, 'yyyy-MM-dd');
+    if (Params.createEndTime) Params.createEndTime = this.format.transform(Params.createEndTime, 'yyyy-MM-dd');
     if (Params.preStartDate) Params.preStartDate = this.format.transform(Params.preStartDate, 'yyyy-MM-dd');
     if (Params.preEndDate) Params.preEndDate = this.format.transform(Params.preEndDate, 'yyyy-MM-dd');
     if (Params.visitStartDate) Params.visitStartDate = this.format.transform(Params.visitStartDate, 'yyyy-MM-dd');
@@ -125,16 +106,16 @@ export class XiaochengxuComponent implements OnInit {
 
   /* ---------------------------- 约束开始/结束日期 ---------------------------- */
   _disabledStartDate1 = (startValue) => {
-    if (!startValue || !this.queryForm.get('filloutEndDate').value) {
+    if (!startValue || !this.queryForm.get('createEndTime').value) {
       return false;
     }
-    return startValue.getTime() >= this.queryForm.get('filloutEndDate').value.getTime();
+    return startValue.getTime() >= this.queryForm.get('createEndTime').value.getTime();
   };
   _disabledEndDate1 = (endValue) => {
-    if (!endValue || !this.queryForm.get('filloutStartDate').value) {
+    if (!endValue || !this.queryForm.get('createStartTime').value) {
       return false;
     }
-    return endValue.getTime() < this.queryForm.get('filloutStartDate').value.getTime();
+    return endValue.getTime() < this.queryForm.get('createStartTime').value.getTime();
   };
   _disabledStartDate2 = (startValue) => {
     if (!startValue || !this.queryForm.get('preEndDate').value) {
@@ -193,9 +174,9 @@ export class XiaochengxuComponent implements OnInit {
 
 
 
-  showTreeModal(id): void {
+  showTreeModal(id, name): void {
     const subscription = this.modalService.open({
-      title: '关系图',
+      title: `${name}的关系图`,
       content: TreeComponent,
       footer: false,
       componentParams: {
@@ -203,7 +184,9 @@ export class XiaochengxuComponent implements OnInit {
       }
     });
     subscription.subscribe(result => {
-      // console.log(result);
+      if (result == 'close') {
+        subscription.destroy()
+      }
     })
   }
 

@@ -1,0 +1,53 @@
+<div class="container">
+  <div>
+    <img *ngIf="data.headSculpture" [src]="data.headSculpture" alt="">
+  </div>
+  <ul>
+    <li>
+      <label>客户Id:</label>
+      <span>{{ data?.wxCustomerId }}</span>
+    </li>
+    <li>
+      <label>微信名称:</label>
+      <span>{{ data?.nickName }}</span>
+    </li>
+    <li>
+      <label>性别:</label>
+      <span>{{ data?.sex }}</span>
+    </li>
+    <li>
+      <label>地理位置:</label>
+      <span>{{ data?.country ? data.country + '' + data.province + '' + data.city : '--' }}</span>
+    </li>
+  </ul>
+  <h2>客户动态轨迹图</h2>
+
+  <nz-timeline>
+    <nz-timeline-item>
+      <div class="content">
+        <h4>宝妈快答 {{ data?.answerDate }}</h4>
+        <ul>
+          <li>
+            <label>领取奖励:</label>
+            <span>{{ data?.wxAnswerRewardInfo }}</span>
+          </li>
+          <li>
+            <label>宝宝性别:</label>
+            <span>{{ data?.babySex }}</span>
+          </li>
+        </ul>
+      </div>
+    </nz-timeline-item>
+    <nz-timeline-item>
+      <div class="content">
+        <h4>宝妈福袋 {{ data?.luckBagDate }}</h4>
+        <ul>
+          <li>
+            <label>兑换奖励:</label>
+            <span>{{ data?.wxLuckbagRewardInfo }}</span>
+          </li>
+        </ul>
+      </div>
+    </nz-timeline-item>
+  </nz-timeline>
+</div>

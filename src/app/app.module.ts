@@ -33,6 +33,7 @@ import { CustomerSourceService } from './services/selects/customer-source.servic
 import { DatePipe, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { ContentGuard } from './base/content/content.guard';
 import { TreeComponent } from './views/xiaochengxu/tree/tree.component';
+import { DetailsComponent } from './views/xiaochengxu/details/details.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { TreeComponent } from './views/xiaochengxu/tree/tree.component';
     SourceComponent,
     UpdateComponent,
     XiaochengxuComponent,
-    TreeComponent
+    TreeComponent,
+    DetailsComponent
   ],
   entryComponents: [
     AddCustomerComponent,

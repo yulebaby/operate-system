@@ -1,3 +1,4 @@
+import { DetailsComponent } from './views/xiaochengxu/details/details.component';
 import { XiaochengxuComponent } from './views/xiaochengxu/xiaochengxu.component';
 import { BaseGuard } from './base/base.guard';
 import { CustomerComponent } from './views/customer/customer.component';
@@ -45,7 +46,11 @@ const routes: Routes = [
       {
         path: 'xiaochengxu',
         component: XiaochengxuComponent
-      }
+      },
+      {
+        path: 'details/:id',
+        component: DetailsComponent
+      },
     ]
   },
   {

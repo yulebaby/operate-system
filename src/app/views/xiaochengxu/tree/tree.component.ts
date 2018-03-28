@@ -1,5 +1,7 @@
+import { Router } from '@angular/router';
 import { HttpService } from './../../../services/http.service';
 import { Component, OnInit, Input } from '@angular/core';
+import { NzModalSubject } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-tree',
@@ -18,7 +20,9 @@ export class TreeComponent implements OnInit {
   }
 
   constructor(
-    private http: HttpService
+    private http: HttpService,
+    private router: Router,
+    private subject: NzModalSubject
   ) { }
 
   ngOnInit() {
@@ -46,7 +50,6 @@ export class TreeComponent implements OnInit {
 
   options = {
     getChildren: (node: any) => {
-      console.log(node)
       return new Promise((resolve, reject) => {
         this.getChildren(node.data.wxCustomerId).then( res => {
           resolve(res);
@@ -56,7 +59,10 @@ export class TreeComponent implements OnInit {
   };
 
   onEvent(ev: any) {
-    // console.log(ev);
+    if (ev.eventName === 'focus'){
+      this.subject.next('close');
+      this.router.navigate(['/home/details', ev.node.data.wxCustomerId])
+    }
   }
 
 }

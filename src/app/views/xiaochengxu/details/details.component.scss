@@ -1,0 +1,42 @@
+.container {
+    font-size: 16px;
+    & > div {
+        float: left;
+        width: 120px;
+        height: 120px;
+        img {
+            width: 100%;
+        }
+    }
+
+    & > ul {
+        padding-left: 150px;
+        line-height: 30px;
+        lable {
+            display: inline-block;
+            width: 72px;
+        }
+    }
+    h2 {
+        color: #999;
+        font-size: 20px;
+        font-weight: 400;
+        padding-bottom: 20px;
+        margin: 40px 0 20px;
+        border-bottom: solid 1px #eee;
+    }
+}
+.content {
+    h4 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    li {
+        font-size: 13px;
+        line-height: 28px;
+        lable {
+            display: inline-block;
+            width: 72px;
+        }
+    }
+}
