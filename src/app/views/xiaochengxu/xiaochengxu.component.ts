@@ -31,7 +31,7 @@ export class XiaochengxuComponent implements OnInit {
   /* -------------------- 客户来源集合 --------------------- */
   public customerSpreadItems: any[] = [
     { name: '宝妈快答', id: 10 },
-    { name: '宝妈福袋', id: 11 }
+    { name: '宝宝福袋', id: 11 }
   ];
 
 

@@ -13,7 +13,7 @@
     </li>
     <li>
       <label>性别:</label>
-      <span>{{ data?.sex }}</span>
+      <span>{{ data?.sex == 1 ? '男' : '女' }}</span>
     </li>
     <li>
       <label>地理位置:</label>
@@ -23,7 +23,7 @@
   <h2>客户动态轨迹图</h2>
 
   <nz-timeline>
-    <nz-timeline-item>
+    <nz-timeline-item *ngIf="data?.answerDate">
       <div class="content">
         <h4>宝妈快答 {{ data?.answerDate }}</h4>
         <ul>
@@ -33,14 +33,14 @@
           </li>
           <li>
             <label>宝宝性别:</label>
-            <span>{{ data?.babySex }}</span>
+            <span>{{ data?.babySex == 1 ? '小王子' : '小公主' }}</span>
           </li>
         </ul>
       </div>
     </nz-timeline-item>
-    <nz-timeline-item>
+    <nz-timeline-item *ngIf="data?.luckBagDate">
       <div class="content">
-        <h4>宝妈福袋 {{ data?.luckBagDate }}</h4>
+        <h4>宝宝福袋 {{ data?.luckBagDate }}</h4>
         <ul>
           <li>
             <label>兑换奖励:</label>
