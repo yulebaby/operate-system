@@ -283,7 +283,7 @@
             <a href="javascript:;" (click)="previewCount(data.customerBabyId)">{{ data.babyAwardCodeCount }}</a>
           </ng-container>
         </td>
-        <td nz-td>{{data.province + data.city + data.area}}</td>
+        <td nz-td>{{data.province ? data.province + data.city + data.area : '-'}}</td>
         <td nz-td>{{data.shopName ? data.shopName : '-'}}</td>
         <td nz-td>{{ data.createTime }}</td>
         <td nz-td *ngIf="customerStatus !== 6">
